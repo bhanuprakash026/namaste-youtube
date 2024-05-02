@@ -11,7 +11,7 @@ const SideBar = () => {
   // This type of code is calling Early Return Pattern
   if (!isOpen) return null;
   return (
-    <div className="h-screen mt-3 fixe pr-3">
+    <div className="sideNav h-screen w-[300px] pr-3">
       <ul className="items">
         {sideNavLinks.map((e) => (
           <li className={activeLink === e.navLinkId ? "bg-slate-200 rounded-lg icon flex items-center p-3 hover:cursor-pointer mb-2" : "icon flex items-center p-3 hover:cursor-pointer mb-2 hover:rounded-lg hover:bg-slate-100"} key={e.navLinkId} onClick={() => setActiveLink(e.navLinkId)}>

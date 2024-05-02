@@ -4,7 +4,7 @@ import VideoContainer from "./VideoContainer";
 
 const MainContainer = () => {
   return (
-    <div className="overflow-x-auto w-screen">
+    <div className="overflow-x-auto w-screen flex flex-col justify-start">
       <ButtonsList />
       <VideoContainer />
     </div>
