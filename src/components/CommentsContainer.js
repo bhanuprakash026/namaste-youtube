@@ -9,13 +9,14 @@ const CommentsContainer = ({ videoId }) => {
 
   useEffect(() => {
     getComments();
-  }, []);
+    // eslint-disable-next-line
+  }, []); 
 
   async function getComments() {
     const data = await fetch(COMMENTS_API + `${videoId}&textFormat=plainText&part=replies&maxResults=100&key=${GOOGLE_API_KEY}`);
     const json = await data.json();
     setComments(json.items || []);
-    console.log(comments)
+    
   }
 
   const toggleCommentReply = (commentId) => {
@@ -29,8 +30,8 @@ const CommentsContainer = ({ videoId }) => {
         {comments.map((eComment) => (
           <div className='flex my-3' key={eComment.id}>
             <img className='h-12 w-12 round rounded-full' src={eComment.snippet.topLevelComment.snippet.authorProfileImageUrl} alt="" />
-            <div className='pl-3 flex flex-col items-start flex-wrap w-[500px]'>
-              <h5>{eComment.snippet.topLevelComment.snippet?.authorDisplayName}</h5>
+            <div className='user-comment-wrapper'>
+              <h5 className='font-[600]'>{eComment.snippet.topLevelComment.snippet?.authorDisplayName}</h5>
               <h6 className=''>{eComment.snippet.topLevelComment.snippet.textDisplay}</h6>
               {eComment.snippet?.totalReplyCount > 0 && (<div className='flex mt-2 bg-slate-100 hover:bg-[#ddddfc] px-3 py-1 hover:cursor-pointer round rounded-3xl' onClick={() => toggleCommentReply(eComment.id)}>
                 {openCommentId === eComment.id ? <GoTriangleUp style={{ color: "blue", fontSize: "30px" }} /> : <GoTriangleDown style={{ color: "blue", fontSize: "30px" }} />}

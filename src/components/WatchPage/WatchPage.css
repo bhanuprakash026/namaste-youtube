@@ -1,0 +1,40 @@
+.watch-page-container {
+  display: flex;
+  width: 100%;
+}
+
+.iFrame-comments-container-open {
+  display: flex;
+  flex-direction: column;
+  width: 65%;
+}
+
+.iFrame-comments-container-close {
+  display: flex;
+  width: 67%;
+  flex-direction: column;
+}
+
+
+.i-frame-container {
+  flex: 1;
+}
+
+.suggestions-container {
+  flex: 1;
+  overflow: hidden;
+}
+
+.suggestion-list-container {
+  display: flex;
+  margin: 0 15px 15px 15px;
+}
+
+.suggestion-list-description-container {
+  display: flex;
+  flex-direction: column;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;  
+}
+

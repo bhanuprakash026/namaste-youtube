@@ -5,6 +5,8 @@
 /.pnp
 .pnp.js
 
+# Node artifact files
+/namaste-youtube/src/utils/constansAPI.js
 # testing
 /coverage
 

@@ -59,6 +59,55 @@
   }
 }
 
+.video-card-container {
+  display: flex;
+  flex-direction: column;
+  width: 430px;
+  align-items: flex-start;
+  transition: ease 500ms;
+  margin: 10px;
+
+  white-space: nowrap; 
+  overflow: hidden;
+  /* text-overflow: ellipsis; */
+}
+
+.video-card-container-close {
+  width: 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  transition: ease 500ms;
+  margin: 10px;
+
+  white-space: nowrap; 
+  overflow: hidden;
+}
+
+
+.video-card-container:hover {
+  transform: scale(1.05);
+}
+
+.video-title {
+  width: 1060px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  text-align: left;
+
+}
+
+.video-title-close {
+  width: 1060px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  text-align: left;
+
+}
+
+
 .navbar {
   /* display: flex;
   flex-direction: row;
@@ -69,7 +118,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 10;
+  z-index: 3;
   background-color: white;
 }
 
@@ -77,13 +126,35 @@
   position: sticky;
   left: 0;
   top: 100px;
+  width: 15%
 }
 
-.comment-container {
+.i-frame-container-open {
+  width: 70%;
+}
+
+.i-frame-container-close {
+  width: 67%;
+}
+
+.recomended-container-open {
+  width: 30%;
+  border: 1px solid blueviolet;
+}
+
+.recomended-container-close {
+  width: 33%;
+  border: 1px solid blueviolet;
+}
+
+.comment-container-open {
   display: flex;
-  align-items: center;
-  align-items: start;
-  width: 550px;
+  border: 1px solid orangered;
+  width: 67%;
+}
+
+.comment-container-close {
+
 }
 .comment-content-wrapper {
   display: flex;
@@ -94,12 +165,20 @@
 
 }
 
-.watch-page-container{
+.watch-page-container-menu-open {
+  display: flex;
+  align-items: start;
+  width: 75%;
+}
+
+/* .watch-page-container{
   display: flex;
   flex-direction: column;
   align-items: start;
   width: 100%;
-}
+  border: 1px solid black;
+} */
+
 .video-live-chat-wrapper {
   display: flex;
   flex-direction: row;
@@ -116,29 +195,29 @@
   align-items: flex-start;
   flex-wrap: wrap;
   margin: 10px 0px;
-  width: 840px;
+  width: 100%;
   display: flex;
 }
 
 .hide-video-description {
   display: flex;
   justify-content: center;
-  width: 840px;
+  width: 100%;
   background-color: #fffefe;
   height: 60px;
   
 }
 .expand-video-description {
   display: flex;
-  align-self: flex-start;
-  width: 840px;
+  text-align: start;
+  width: 100%;
   padding: 20px;
   display: flex;
   justify-content: start;
   background-color: #f4f4f4;
 }
 .video-des {
-  width: 840px;
+  width: 100%;  
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -147,4 +226,14 @@
   font-size: 16px;
   margin: 0;
   background: rgb(227, 227, 227);
+}
+
+.user-comment-wrapper{
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+  flex-wrap: wrap;
+  text-align: start;
+  margin-left: 10px;
+
 }

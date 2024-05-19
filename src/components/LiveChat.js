@@ -23,7 +23,7 @@ const LiveChat = () => {
 
   }, [])
   return (
-    <div className='h-[520px] ml-4 flex flex-col-reverse items-start p-5 round rounded-2xl border border-[#cdcdcd] overflow-y-auto '>
+    <div className='h-[520px] mb-3 ml-4 flex flex-col-reverse items-start p-5 round rounded-2xl border border-[#cdcdcd] overflow-y-auto '>
       {liveChatMessages.map((c, i) => (
         <LiveChatMessage key={i} name={c.name} message={c.message}/>
       ))}

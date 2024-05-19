@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { UserRound, Search, Menu } from 'lucide-react';
 import { useDispatch, useSelector } from "react-redux";
 import { toggleMenu } from "../redux/navSlice";
@@ -11,8 +11,18 @@ const Head = () => {
   const [showSuggestionsList, setShowSuggestionsList] = useState(false)
   const dispatch = useDispatch()
   const searchCache = useSelector((Store) => Store.search)
-
+  const suggestionsRef = useRef(null)
+  
   useEffect(() => {
+    let handler = (e) => {
+      if (suggestionsRef.current !== null && suggestionsRef.current !== undefined) {
+        if (!suggestionsRef.current.contains(e.target)) {
+          setShowSuggestionsList(false)
+        }
+      }
+    }
+
+    document.addEventListener('mousedown', handler)
 
     const timer = setTimeout(() => {
       if (searchCache[searchQuery]) {
@@ -23,8 +33,9 @@ const Head = () => {
     }, 200)
     return () => {
       clearTimeout(timer)
+      document.removeEventListener('mousedown', handler)
     }
-    // eslint ignore
+    // eslint-disable-next-line
   }, [searchQuery])
 
   const getSearchSuggestions = async () => {
@@ -59,13 +70,12 @@ const Head = () => {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           onFocus={() => setShowSuggestionsList(true)}
-          // onBlur={() => setShowSuggestionsList(false)}
         />
         <button className="border bg-slate-100 border-gray-400 py-2 px-3 rounded-r-full"><Search color='gray' /></button>
-        {(suggestionsList.length > 0 && showSuggestionsList) && (<div className="absolute items-center rounded-xl top-[70px] shadow-xl bg-white border border-[#c2c2c2] w-1/3">
+        {(suggestionsList.length > 0 && showSuggestionsList) && (<div ref={suggestionsRef} className="absolute items-center rounded-xl top-[70px] shadow-xl bg-white border border-[#c2c2c2] w-1/3">
           <ul className="flex flex-col items-start">
-            {suggestionsList.map((s) => (
-              <li className="p-2" onClick={() => setSearchQuery(s)}>{s}</li>
+            {suggestionsList.map((s, i) => (
+              <li className="p-2" key={i} onClick={() => setSearchQuery(s)}>{s}</li>
             ))}
           </ul>
         </div>)}

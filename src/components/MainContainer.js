@@ -1,11 +1,9 @@
 import React from "react";
-import ButtonsList from "./ButtonsList";
 import VideoContainer from "./VideoContainer";
 
 const MainContainer = () => {
   return (
-    <div className="overflow-x-auto w-screen flex flex-col justify-start">
-      <ButtonsList />
+    <div className="w-screen flex flex-col justify-start">
       <VideoContainer />
     </div>
   );
