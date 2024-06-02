@@ -21,6 +21,7 @@ const LiveChat = () => {
 
     return ( )=> clearInterval(i)
 
+  // eslint-disable-next-line
   }, [])
   return (
     <div className='h-[520px] mb-3 ml-4 flex flex-col-reverse items-start p-5 round rounded-2xl border border-[#cdcdcd] overflow-y-auto '>

@@ -12,7 +12,7 @@ const Head = () => {
   const dispatch = useDispatch()
   const searchCache = useSelector((Store) => Store.search)
   const suggestionsRef = useRef(null)
-  
+
   useEffect(() => {
     let handler = (e) => {
       if (suggestionsRef.current !== null && suggestionsRef.current !== undefined) {
@@ -72,13 +72,16 @@ const Head = () => {
           onFocus={() => setShowSuggestionsList(true)}
         />
         <button className="border bg-slate-100 border-gray-400 py-2 px-3 rounded-r-full"><Search color='gray' /></button>
-        {(suggestionsList.length > 0 && showSuggestionsList) && (<div ref={suggestionsRef} className="absolute items-center rounded-xl top-[70px] shadow-xl bg-white border border-[#c2c2c2] w-1/3">
-          <ul className="flex flex-col items-start">
-            {suggestionsList.map((s, i) => (
-              <li className="p-2" key={i} onClick={() => setSearchQuery(s)}>{s}</li>
-            ))}
-          </ul>
-        </div>)}
+        {(suggestionsList.length > 0 && showSuggestionsList) && (
+
+          <div ref={suggestionsRef} className="m-auto absolute items-center rounded-xl top-[70px] shadow-xl bg-white border border-[#c2c2c2] w-1/2">
+            <ul className="flex flex-col items-start">
+              {suggestionsList.map((s, i) => (
+                <li className="p-2" key={i} onClick={() => setSearchQuery(s)}>{s}</li>
+              ))}
+            </ul>
+          </div>
+        )}
 
 
 

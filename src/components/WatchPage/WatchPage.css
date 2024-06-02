@@ -2,23 +2,61 @@
   display: flex;
   width: 100%;
 }
+.open-watch-page-container{
+  display: flex;
+  width: 85%;
+}
 
 .iFrame-comments-container-open {
   display: flex;
   flex-direction: column;
   width: 65%;
+  overflow: hidden;
 }
 
 .iFrame-comments-container-close {
   display: flex;
   width: 67%;
   flex-direction: column;
+  overflow: hidden;
 }
-
-
-.i-frame-container {
+.title-description-wrapper {
   flex: 1;
+  overflow: hidden;
 }
+
+
+
+.video-title-container{
+  width: 100%;
+}
+
+.hide {
+  height: 70px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.video-description{
+  flex: 1;
+  background-color: #f2f5f9;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  border: 1px solid #c3dcfe;
+  /* white-space: nowrap;
+  overflow: hidden; */
+}
+
+.show-hide-btn{
+  background-color: rgb(209, 225, 255);
+  padding: 5px 10px;
+  align-self: flex-end;
+  cursor: pointer;
+  margin: 10px 0px;
+}
+
 
 .suggestions-container {
   flex: 1;
