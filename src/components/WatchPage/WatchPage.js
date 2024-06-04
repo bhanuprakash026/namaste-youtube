@@ -8,14 +8,18 @@ import CommentsContainer from './CommentsContainer'
 import LiveChat from '../LiveChat'
 import SuggestionVideo from './SuggestionVideo'
 import './WatchPage.css'
-import { GOOGLE_API_KEY, VIDEO_DETAILS } from '../../utils/constantsAPI'
+import { GOOGLE_API_KEY, SUGGESTIONS_VIDEOS_API, VIDEO_DETAILS } from '../../utils/constantsAPI'
 import VideoDescriptionContainer from './VideoDescriptionContainer'
 
+let componentRendered = 0
 
 const WatchPage = () => {
   const [videoDetails, setVideoDetails] = useState()
   const [hideVideoDescription, setHideVideoDescription] = useState(true)
   const [videoTitle, setVideoTitle] = useState('')
+
+  const [suggestionsVideos, setSuggestionsVideos] = useState([])
+  const [nextPageToken, setNextPageToken] = useState('')
   const dispatch = useDispatch()
   const [searchParam] = useSearchParams()
   const isOpen = useSelector((Store) => Store.nav.isMenuOpen)
@@ -36,13 +40,40 @@ const WatchPage = () => {
     }
   }
 
+  async function getSuggestionsVideos() {
+    try {
+      const response = await fetch(`${SUGGESTIONS_VIDEOS_API}&q=${videoTitle}&maxResults=20`);
+      const json = await response.json()
+      setSuggestionsVideos((prevState) => [...prevState, ...json?.items])
+      setNextPageToken(json?.nextPageToken)
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
+
+  async function fetchMoreSuggestionVideos() {
+    try {
+      const response = await fetch(`${SUGGESTIONS_VIDEOS_API}&q=${videoTitle}&maxResults=5&pageToken=${nextPageToken}`);
+      const json = await response.json()
+      setSuggestionsVideos((prevState) => [...prevState, ...json?.items])
+      setNextPageToken(json?.nextPageToken)
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
+
+  console.log('suggestions videos',suggestionsVideos)
+
   useEffect(() => {
     dispatch(closeMenu())
     getVideoDetails()
+    getSuggestionsVideos()
+
 
     // eslint-disable-next-line
-  }, [videoDetails])
+  }, [nextPageToken])
 
+  console.log('counting re-renders', (componentRendered += 1))
   return (
     
     <div className={isOpen ? 'open-watch-page-container' : 'watch-page-container'}>
@@ -96,7 +127,7 @@ const WatchPage = () => {
           </div>
         }
         {/* Here Why video details are undefined */}
-        <SuggestionVideo videoTitle={videoTitle}/>
+        <SuggestionVideo videoTitle={videoTitle} suggestionsVideos={suggestionsVideos} getMoreSuggestionsVideos={fetchMoreSuggestionVideos}/>
         {/* {videoDetails?.items[0]?.snippet?.title !== undefined && <SuggestionVideo videoTitle={videoDetails?.items[0]?.snippet?.title}/>} */}
       </div>
     </div>
