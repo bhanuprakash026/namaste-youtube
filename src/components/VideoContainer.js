@@ -3,7 +3,6 @@ import { YOUTUBE_VIDEO_API } from "../utils/constantsAPI";
 import VideoCardContainer from "./VideoCardContainer";
 import { Link } from "react-router-dom";
 import { BeatLoader } from "react-spinners";
-import VideoCardContainerShimmerUI from "./ShimmerUI/VideoCardContainerShimmerUI";
 
 const VideoContainer = () => {
   const [videos, setVideo] = useState([]);
