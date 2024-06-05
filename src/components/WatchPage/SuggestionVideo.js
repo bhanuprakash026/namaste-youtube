@@ -1,26 +1,26 @@
 import React from "react";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 
 const SuggestionVideo = ({ videoTitle,  suggestionsVideos, getMoreSuggestionsVideos}) => {
 
+  const handleScroll = useCallback(() => {
+    if(document.body.scrollHeight <= window.scrollY + window.innerHeight) {
+      getMoreSuggestionsVideos()
+    }
+  }, [getMoreSuggestionsVideos]) 
+
+  
   useEffect(() => {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
     // eslint-disable-next-line
   }, [])
-  const handleScroll = () => {
-    if(document.body.scrollHeight <= window.scrollY + window.innerHeight) {
-      getMoreSuggestionsVideos()
-    }
-  }
 
   return (
     <div>
-      {console.log("SuggestionVideo rendered")}SuggestionVideo {videoTitle}
       <div>
         {suggestionsVideos?.map((e, index) => (
           <div key={index} className="suggestion-list-container">
-            {console.log("SuggestionVideo Component Rendered")}
             <img
               className="h-[120px]"
               src={e.snippet?.thumbnails?.medium?.url}
@@ -42,4 +42,4 @@ const SuggestionVideo = ({ videoTitle,  suggestionsVideos, getMoreSuggestionsVid
   );
 };
 
-export default SuggestionVideo;
+export default React.memo(SuggestionVideo);

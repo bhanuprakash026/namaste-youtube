@@ -10,8 +10,8 @@ import SuggestionVideo from './SuggestionVideo'
 import './WatchPage.css'
 import { GOOGLE_API_KEY, SUGGESTIONS_VIDEOS_API, VIDEO_DETAILS } from '../../utils/constantsAPI'
 import VideoDescriptionContainer from './VideoDescriptionContainer'
+import { BeatLoader } from 'react-spinners'
 
-let componentRendered = 0
 
 const WatchPage = () => {
   const [videoDetails, setVideoDetails] = useState()
@@ -20,6 +20,7 @@ const WatchPage = () => {
 
   const [suggestionsVideos, setSuggestionsVideos] = useState([])
   const [nextPageToken, setNextPageToken] = useState('')
+  const [isLoading, setIsLoading] = useState(true)
   const dispatch = useDispatch()
   const [searchParam] = useSearchParams()
   const isOpen = useSelector((Store) => Store.nav.isMenuOpen)
@@ -53,16 +54,17 @@ const WatchPage = () => {
 
   async function fetchMoreSuggestionVideos() {
     try {
+      setIsLoading(true)
       const response = await fetch(`${SUGGESTIONS_VIDEOS_API}&q=${videoTitle}&maxResults=5&pageToken=${nextPageToken}`);
       const json = await response.json()
       setSuggestionsVideos((prevState) => [...prevState, ...json?.items])
       setNextPageToken(json?.nextPageToken)
+      setIsLoading(false)
+
     } catch (error) {
       throw new Error(error)
     }
   }
-
-  console.log('suggestions videos',suggestionsVideos)
 
   useEffect(() => {
     dispatch(closeMenu())
@@ -71,13 +73,11 @@ const WatchPage = () => {
 
 
     // eslint-disable-next-line
-  }, [nextPageToken])
+  }, [])
 
-  console.log('counting re-renders', (componentRendered += 1))
   return (
-    
+
     <div className={isOpen ? 'open-watch-page-container' : 'watch-page-container'}>
-      {console.log("WatchPage rendered")}
       <div className={`${isOpen ? 'iFrame-comments-container-open' : "iFrame-comments-container-close"}`}>
         <iframe
           width="100%"
@@ -127,7 +127,8 @@ const WatchPage = () => {
           </div>
         }
         {/* Here Why video details are undefined */}
-        <SuggestionVideo videoTitle={videoTitle} suggestionsVideos={suggestionsVideos} getMoreSuggestionsVideos={fetchMoreSuggestionVideos}/>
+        <SuggestionVideo videoTitle={videoTitle} suggestionsVideos={suggestionsVideos} getMoreSuggestionsVideos={fetchMoreSuggestionVideos} />
+        {isLoading && <BeatLoader color='blue' /> }
         {/* {videoDetails?.items[0]?.snippet?.title !== undefined && <SuggestionVideo videoTitle={videoDetails?.items[0]?.snippet?.title}/>} */}
       </div>
     </div>
