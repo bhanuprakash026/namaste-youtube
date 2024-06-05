@@ -1,13 +1,15 @@
 import React from "react";
+import { throttle } from "lodash";
+
 import { useEffect, useCallback } from "react";
 
 const SuggestionVideo = ({ videoTitle,  suggestionsVideos, getMoreSuggestionsVideos}) => {
 
-  const handleScroll = useCallback(() => {
+  const handleScroll = useCallback(throttle(() => {
     if(document.body.scrollHeight <= window.scrollY + window.innerHeight) {
       getMoreSuggestionsVideos()
     }
-  }, [getMoreSuggestionsVideos]) 
+  }, 2000), [getMoreSuggestionsVideos])
 
   
   useEffect(() => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
@@ -52,7 +52,8 @@ const WatchPage = () => {
     }
   }
 
-  async function fetchMoreSuggestionVideos() {
+  const fetchMoreSuggestionVideos = useCallback(async() => {
+    console.log(nextPageToken)
     try {
       setIsLoading(true)
       const response = await fetch(`${SUGGESTIONS_VIDEOS_API}&q=${videoTitle}&maxResults=5&pageToken=${nextPageToken}`);
@@ -64,7 +65,8 @@ const WatchPage = () => {
     } catch (error) {
       throw new Error(error)
     }
-  }
+  }, [suggestionsVideos, nextPageToken])
+
 
   useEffect(() => {
     dispatch(closeMenu())
