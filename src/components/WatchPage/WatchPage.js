@@ -65,6 +65,7 @@ const WatchPage = () => {
     } catch (error) {
       throw new Error(error)
     }
+    // eslint-disable-next-line
   }, [suggestionsVideos, nextPageToken])
 
 

@@ -18,10 +18,11 @@ const VideoContainer = () => {
     observer.current = new IntersectionObserver(entries => {
       console.log('entries[0]',entries[0])
       if(entries[0].isIntersecting) {
-        if(nextPageToken != null || nextPageToken != undefined ) fetchMoreVideos()
+        if(nextPageToken != null || nextPageToken !== undefined ) fetchMoreVideos()
       }
     })
     if(node) observer.current.observe(node)
+      // eslint-disable-next-line
   }, [isLoading, nextPageToken]);
 
   useEffect(() => {

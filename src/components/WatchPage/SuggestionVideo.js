@@ -5,11 +5,13 @@ import { useEffect, useCallback } from "react";
 
 const SuggestionVideo = ({ videoTitle,  suggestionsVideos, getMoreSuggestionsVideos}) => {
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleScroll = useCallback(throttle(() => {
     if(document.body.scrollHeight <= window.scrollY + window.innerHeight) {
       getMoreSuggestionsVideos()
     }
-  }, 2000), [getMoreSuggestionsVideos])
+
+  }, 1000), [getMoreSuggestionsVideos])
 
   
   useEffect(() => {
