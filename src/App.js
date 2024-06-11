@@ -7,7 +7,7 @@ import appStore from './redux/appStore';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import MainContainer from './components/MainContainer';
 import WatchPage from './components/WatchPage/WatchPage'
-import Channel from './components/Channel';
+import Channel from './components/ChannelDetails/Channel';
 import ErrorPage from './components/ErrorPage';
 
 const appRouter = createBrowserRouter([{
@@ -23,7 +23,7 @@ const appRouter = createBrowserRouter([{
       element: <WatchPage />
     },
     {
-      path: '/@:id', // Change here
+      path: '/@:channelId',
       element: <Channel />
     }
 

@@ -13,10 +13,8 @@ const VideoContainer = () => {
   const lastVideoCardElement = useCallback((node) => {
     
     if (isLoading) return;
-    console.log('observer.current',observer.current)
     if (observer.current) observer.current.disconnect();
     observer.current = new IntersectionObserver(entries => {
-      console.log('entries[0]',entries[0])
       if(entries[0].isIntersecting) {
         if(nextPageToken != null || nextPageToken !== undefined ) fetchMoreVideos()
       }
