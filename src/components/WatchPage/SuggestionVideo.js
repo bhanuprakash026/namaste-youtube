@@ -46,17 +46,18 @@ const SuggestionVideo = ({ isLoading, suggestionsVideos, getMoreSuggestionsVideo
             <Link to={`?v=${e?.id?.videoId}`}>
               <div key={index} className="suggestion-list-container">
                 <img
-                  className="h-[120px]"
+                  className="h-[120px] rounded-md mr-2"
                   src={e.snippet?.thumbnails?.medium?.url}
                   alt={e.snippet?.title}
                 />
                 <div className="suggestion-list-description-container">
-                  <p className="text-left text-ellipsis overflow-hidden">
+                  <p className="text-left text-ellipsis overflow-hidden font-poppins font-bold">
                     {e.snippet?.title}
                   </p>
-                  <p className="text-left text-ellipsis overflow-hidden">
+                  <p className=" text-[#2d2d2d] text-[15px] text-left text-ellipsis overflow-hidden">
                     {e.snippet?.description}
                   </p>
+                  <p className='text-[#626262] font-bold text-left'>{e.snippet?.channelTitle}</p>
                 </div>
               </div>
             </Link>

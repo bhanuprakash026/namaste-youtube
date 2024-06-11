@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { COMMENTS_API, GOOGLE_API_KEY } from '../../utils/constantsAPI'
 import { GoTriangleUp, GoTriangleDown } from "react-icons/go";
+import { BeatLoader } from 'react-spinners';
 
 
 const CommentsContainer = ({ videoId }) => {
   const [comments, setComments] = useState([]);
   const [openCommentId, setOpenCommentId] = useState(null);
-  const [nextPageToken, setNextPageToken] = useState('')
+  const [nextPageToken, setNextPageToken] = useState('');
+  const [isLoading, setIsLoading] = useState(false)
 
   const filterUniqueComment = (commentsArray) => {
     let uniqueComments = []
@@ -38,9 +40,11 @@ const CommentsContainer = ({ videoId }) => {
 
   const fetchMoreComments = async () => {
     try {
+      setIsLoading(true)
       const data = await fetch(COMMENTS_API + `${videoId}&textFormat=plainText&part=replies&maxResults=10&key=${GOOGLE_API_KEY}&pageToken=${nextPageToken}`)
       const json = await data.json()
       setComments((prevState) => filterUniqueComment([...prevState, ...json?.items]))
+      setIsLoading(false)
     } catch (error) {
       console.log(error)
     }
@@ -54,10 +58,12 @@ const CommentsContainer = ({ videoId }) => {
 
   async function getComments() {
     try {
+      setIsLoading(true)
       const data = await fetch(COMMENTS_API + `${videoId}&textFormat=plainText&part=replies&maxResults=50&key=${GOOGLE_API_KEY}`);
       const json = await data.json();
       setComments((prevState) => filterUniqueComment([...prevState, ...json?.items]))
       setNextPageToken(json?.nextPageToken)
+      setIsLoading(false)
     } catch (error) {
       console.log(error)
     }
@@ -128,6 +134,7 @@ const CommentsContainer = ({ videoId }) => {
 
         })}
       </div>
+      {isLoading && <BeatLoader color='blue'/>}
     </div>
   );
 }

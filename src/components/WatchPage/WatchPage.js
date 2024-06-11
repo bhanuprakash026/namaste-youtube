@@ -47,6 +47,7 @@ const WatchPage = () => {
       setIsLoading(true)
       const response = await fetch(`${SUGGESTIONS_VIDEOS_API}&q=${videoTitle}&maxResults=20`)
       const json = await response.json()
+      console.log('JOSN:-', json)
       setSuggestionsVideos(json.items)
       setNextPageToken(json.nextPageToken)
       setIsLoading(false)
@@ -79,12 +80,14 @@ const WatchPage = () => {
       setNextPageToken('')
       getVideoDetails()
     }
+          // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [videoId])
 
   useEffect(() => {
     if (videoTitle) {
       getSuggestionsVideos()
     }
+          // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [videoTitle])
 
   const channelName = videoDetails?.items[0]?.snippet?.channelTitle.split(" ").join("")
