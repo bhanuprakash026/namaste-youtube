@@ -2,11 +2,11 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 
 function Channel() {
-  const { channelId } = useParams();
+  const { id } = useParams();
 
   return (
     <div>
-      <h1>Channel: {channelId}</h1>
+      <h1>Channel: {id}</h1>
       {/* Additional channel content here */}
     </div>
   );

@@ -108,7 +108,7 @@ const WatchPage = () => {
         <div className='title-description-wrapper'>
           <div className='video-title-container'>
             <h1 className='font-bold text-left text-lg font-poppins my-3'>{videoDetails?.items[0]?.snippet?.title}</h1>
-            <Link to={`/@${encodeURIComponent(channelName)}`}>
+            <Link to={`/channel/${channelName}`}> 
               <div className='text-left mb-2'>
                 <img src='' alt='' />
                 <div>
