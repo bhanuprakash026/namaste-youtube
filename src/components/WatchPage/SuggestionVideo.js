@@ -1,8 +1,8 @@
-import { useCallback, useRef } from 'react'
+import { useCallback, useRef, useEffect, memo } from 'react'
 import React from 'react'
 import { Link } from 'react-router-dom';
 
-const SuggestionVideo = ({ isLoading, suggestionsVideos, getMoreSuggestionsVideos }) => {
+const SuggestionVideo = ({ videoId, isLoading, suggestionsVideos, getMoreSuggestionsVideos }) => {
 
   const observer = useRef();
   const lastSuggestionVideoCard = useCallback((node) => {
@@ -17,6 +17,10 @@ const SuggestionVideo = ({ isLoading, suggestionsVideos, getMoreSuggestionsVideo
     if (node) observer.current.observe(node)
     // eslint-disable-next-line
   }, [isLoading, getMoreSuggestionsVideos]);
+
+  useEffect(() => {
+
+  }, [videoId])
 
   return (
     <>
@@ -68,4 +72,4 @@ const SuggestionVideo = ({ isLoading, suggestionsVideos, getMoreSuggestionsVideo
   )
 }
 
-export default SuggestionVideo
+export default memo(SuggestionVideo)

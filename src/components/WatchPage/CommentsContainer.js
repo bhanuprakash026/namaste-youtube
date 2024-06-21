@@ -1,74 +1,32 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react'
-import { COMMENTS_API, GOOGLE_API_KEY } from '../../utils/constantsAPI'
+import React, { useState, useEffect,  useRef, useCallback, memo } from 'react'
 import { GoTriangleUp, GoTriangleDown } from "react-icons/go";
 import { BeatLoader } from 'react-spinners';
+// import { useSearchParams } from 'react-router-dom';
 
 
-const CommentsContainer = ({ videoId }) => {
-  const [comments, setComments] = useState([]);
+const CommentsContainer = ({ videoId, comments, getMoreComments, isLoading }) => {
   const [openCommentId, setOpenCommentId] = useState(null);
-  const [nextPageToken, setNextPageToken] = useState('');
-  const [isLoading, setIsLoading] = useState(false)
-
-  const filterUniqueComment = (commentsArray) => {
-    let uniqueComments = []
-    let uniqueCommentId = new Set();
-
-    commentsArray.forEach(comment => {
-      if (!uniqueCommentId.has(comment.id)) {
-        uniqueComments.push(comment)
-        uniqueCommentId.add(comment.id)
-      }
-    });
-
-    return uniqueComments
-  }
+  // const [searchParam] = useSearchParams()
 
   const observer = useRef()
   const lastCommentContainer = useCallback((node) => {
     if (observer.current) observer.current.disconnect()
     observer.current = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
-        fetchMoreComments()
+        getMoreComments()
       }
     })
     console.log(node)
     if (node) observer.current.observe(node)
 
       // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [nextPageToken])
+  }, [isLoading, getMoreComments])
 
-  const fetchMoreComments = async () => {
-    try {
-      setIsLoading(true)
-      const data = await fetch(COMMENTS_API + `${videoId}&textFormat=plainText&part=replies&maxResults=10&key=${GOOGLE_API_KEY}&pageToken=${nextPageToken}`)
-      const json = await data.json()
-      setComments((prevState) => filterUniqueComment([...prevState, ...json?.items]))
-      setIsLoading(false)
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
+  
   useEffect(() => {
-    getComments();
-    setComments([])
-    // eslint-disable-next-line
-  }, [videoId]);
 
-  async function getComments() {
-    try {
-      setIsLoading(true)
-      const data = await fetch(COMMENTS_API + `${videoId}&textFormat=plainText&part=replies&maxResults=50&key=${GOOGLE_API_KEY}`);
-      const json = await data.json();
-      setComments((prevState) => filterUniqueComment([...prevState, ...json?.items]))
-      setNextPageToken(json?.nextPageToken)
-      setIsLoading(false)
-    } catch (error) {
-      console.log(error)
-    }
-
-  }
+  }, [videoId])
+  
 
   const toggleCommentReply = (commentId) => {
     setOpenCommentId(openCommentId === commentId ? null : commentId);
@@ -139,5 +97,5 @@ const CommentsContainer = ({ videoId }) => {
   );
 }
 
-export default CommentsContainer;
+export default memo(CommentsContainer);
 

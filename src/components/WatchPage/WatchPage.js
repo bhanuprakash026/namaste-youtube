@@ -5,40 +5,76 @@ import { useDispatch } from 'react-redux'
 import { useSearchParams } from 'react-router-dom'
 import { closeMenu } from '../../redux/navSlice'
 import CommentsContainer from './CommentsContainer'
+import { COMMENTS_API, GOOGLE_API_KEY } from '../../utils/constantsAPI'
 import LiveChat from '../LiveChat'
 import SuggestionVideo from './SuggestionVideo'
 import './WatchPage.css'
-import { GOOGLE_API_KEY, SUGGESTIONS_VIDEOS_API, VIDEO_DETAILS } from '../../utils/constantsAPI'
+import { SUGGESTIONS_VIDEOS_API, VIDEO_DETAILS } from '../../utils/constantsAPI'
 import VideoDescriptionContainer from './VideoDescriptionContainer'
 import { BeatLoader } from 'react-spinners'
 
 
 const WatchPage = () => {
-  
+  const [videoId, setVideoId] = useState('')
   const [videoDetails, setVideoDetails] = useState(null)
   const [hideVideoDescription, setHideVideoDescription] = useState(true)
   const [videoTitle, setVideoTitle] = useState('')
   const [suggestionsVideos, setSuggestionsVideos] = useState([])
   const [nextPageToken, setNextPageToken] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  // comments part
+  const [comments, setComments] = useState([]);
+  const [isCommentsLoading, setIsCommentLoading] = useState(false)
+  const [commentsNextPageToken, setCommentsNextPageToken] = useState('')
   const dispatch = useDispatch()
   const [searchParam] = useSearchParams()
   const isOpen = useSelector((Store) => Store.nav.isMenuOpen)
 
-  const videoId = searchParam.get('v')
+  useEffect(() => {
+    const newVideoId = searchParam.get('v')
+    if (newVideoId && newVideoId !== videoId) {
+      setVideoId(newVideoId)
+    }
+  }, [searchParam, videoId])
 
-  async function getVideoDetails() {
-    try {
-      const data = await fetch(VIDEO_DETAILS + `${videoId}&key=${GOOGLE_API_KEY}`)
-      const json = await data.json()
-      if (json.items && json.items.length > 0) {
-        setVideoDetails(json)
-        setVideoTitle(json.items[0]?.snippet?.title)
-      } else {
-        console.error("No video details found for the given video ID.")
+  // setVideoId(videoId)
+  const filterUniqueComment = (commentsArray) => {
+    let uniqueComments = []
+    let uniqueCommentId = new Set();
+
+    commentsArray.forEach(comment => {
+      if (!uniqueCommentId.has(comment.id)) {
+        uniqueComments.push(comment)
+        uniqueCommentId.add(comment.id)
       }
+    });
+
+    return uniqueComments
+  }
+
+  const fetchMoreComments = async () => {
+    try {
+      setIsCommentLoading(true)
+      const data = await fetch(COMMENTS_API + `${videoId}&textFormat=plainText&part=replies&maxResults=10&key=${GOOGLE_API_KEY}&pageToken=${commentsNextPageToken}`)
+      const json = await data.json()
+      setComments((prevState) => filterUniqueComment([...prevState, ...json?.items]))
+      setCommentsNextPageToken(json?.nextPageToken)
+      setIsCommentLoading(false)
     } catch (error) {
-      console.error("Error fetching video details:", error)
+      console.log(error)
+    }
+  }
+
+  const fetchComments = async () => {
+    try {
+      setIsCommentLoading(true)
+      const data = await fetch(COMMENTS_API + `${videoId}&textFormat=plainText&part=replies&maxResults=10&key=${GOOGLE_API_KEY}&pageToken=${commentsNextPageToken}`)
+      const json = await data.json()
+      setComments((prevState) => filterUniqueComment([...prevState, ...json?.items]))
+      setCommentsNextPageToken(json?.nextPageToken)
+      setIsCommentLoading(false)
+    } catch (error) {
+      console.log(error)
     }
   }
 
@@ -56,6 +92,22 @@ const WatchPage = () => {
     }
   }
 
+  async function getVideoDetails() {
+    try {
+      const data = await fetch(VIDEO_DETAILS + `${videoId}&key=${GOOGLE_API_KEY}`)
+      const json = await data.json()
+      if (json.items && json.items.length > 0) {
+        setVideoDetails(json)
+        setVideoTitle(json.items[0]?.snippet?.title)
+      } else {
+        console.error("No video details found for the given video ID.")
+      }
+    } catch (error) {
+      console.error("Error fetching video details:", error)
+    }
+  }
+
+
   const fetchMoreSuggestionVideos = useCallback(async () => {
     try {
       setIsLoading(true)
@@ -71,24 +123,41 @@ const WatchPage = () => {
 
   useEffect(() => {
     dispatch(closeMenu())
-  }, [dispatch])
-
-  useEffect(() => {
     if (videoId) {
       setVideoDetails(null)
       setSuggestionsVideos([])
       setNextPageToken('')
       getVideoDetails()
+      setCommentsNextPageToken('')
+      setComments([])
     }
-          // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [videoId])
 
-  useEffect(() => {
     if (videoTitle) {
       getSuggestionsVideos()
+      fetchComments()
     }
-          // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [videoTitle])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, videoId, videoTitle])
+
+  // useEffect(() => {
+  //   if (videoId) {
+  //     setVideoDetails(null)
+  //     setSuggestionsVideos([])
+  //     setNextPageToken('')
+  //     getVideoDetails()
+  //     setCommentsNextPageToken('')
+  //     setComments([])
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [videoId])
+
+  // useEffect(() => {
+  //   if (videoTitle) {
+  //     getSuggestionsVideos()
+  //     fetchComments()
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [videoTitle])
 
   const channelName = videoDetails?.items[0]?.snippet?.channelTitle.split(" ").join("")
   return (
@@ -108,7 +177,7 @@ const WatchPage = () => {
         <div className='title-description-wrapper'>
           <div className='video-title-container'>
             <h1 className='font-bold text-left text-lg font-poppins my-3'>{videoDetails?.items[0]?.snippet?.title}</h1>
-            <Link to={`/channel/${channelName}`}> 
+            <Link to={`/channel/${channelName}`}>
               <div className='text-left mb-2'>
                 <img src='' alt='' />
                 <div>
@@ -123,7 +192,7 @@ const WatchPage = () => {
             <button className='self-end font-poppins font-bold' onClick={() => setHideVideoDescription(!hideVideoDescription)}>{hideVideoDescription ? "Show More" : 'Show less'}</button>
           </div>
           <div className='my-5'>
-            <CommentsContainer videoId={videoId} />
+            <CommentsContainer videoId={videoId} comments={comments} getMoreComments={fetchMoreComments} isLoading={isCommentsLoading} />
           </div>
         </div>
       </div>
@@ -133,7 +202,7 @@ const WatchPage = () => {
             <LiveChat />
           </div>
         }
-        <SuggestionVideo isLoading={isLoading} suggestionsVideos={suggestionsVideos} getMoreSuggestionsVideos={fetchMoreSuggestionVideos} />
+        <SuggestionVideo videoId={videoId} isLoading={isLoading} suggestionsVideos={suggestionsVideos} getMoreSuggestionsVideos={fetchMoreSuggestionVideos} />
         {isLoading && <BeatLoader color='blue' />}
       </div>
     </div>

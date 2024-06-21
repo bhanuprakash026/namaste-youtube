@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {memo} from 'react'
 
 const VideoDescriptionContainer = ({ toggleDes, videoDetails }) => {
   return (
@@ -10,4 +10,4 @@ const VideoDescriptionContainer = ({ toggleDes, videoDetails }) => {
   )
 }
 
-export default VideoDescriptionContainer
+export default memo(VideoDescriptionContainer)
