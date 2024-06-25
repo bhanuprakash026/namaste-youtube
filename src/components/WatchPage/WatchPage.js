@@ -158,10 +158,11 @@ const WatchPage = () => {
   //   }
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [videoTitle])
+  console.log("videoDetails:--", videoDetails)
 
   const channelName = videoDetails?.items[0]?.snippet?.channelTitle.split(" ").join("")
   return (
-    <div className={isOpen ? 'open-watch-page-container' : 'watch-page-container'}>
+    <div className={'watch-page-container'}>
       <div className={`${isOpen ? 'iFrame-comments-container-open' : "iFrame-comments-container-close"}`}>
         <iframe
           width="100%"
@@ -192,7 +193,7 @@ const WatchPage = () => {
             <button className='self-end font-poppins font-bold' onClick={() => setHideVideoDescription(!hideVideoDescription)}>{hideVideoDescription ? "Show More" : 'Show less'}</button>
           </div>
           <div className='my-5'>
-            <CommentsContainer videoId={videoId} comments={comments} getMoreComments={fetchMoreComments} isLoading={isCommentsLoading} />
+            <CommentsContainer videoId={videoId} comments={comments} getMoreComments={fetchMoreComments} isCommentsLoading={isCommentsLoading} />
           </div>
         </div>
       </div>

@@ -23,7 +23,7 @@ const appRouter = createBrowserRouter([{
       element: <WatchPage />
     },
     {
-      path: '/channel/:id',
+      path: '/channel/:channelName',
       element: <Channel />
     }
 

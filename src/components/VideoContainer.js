@@ -3,11 +3,13 @@ import { YOUTUBE_VIDEO_API } from "../utils/constantsAPI";
 import VideoCardContainer from "./VideoCardContainer";
 import { Link } from "react-router-dom";
 import { BeatLoader } from "react-spinners";
+import { useSelector } from "react-redux";
 
 const VideoContainer = () => {
   const [videos, setVideo] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [nextPageToken, setNextPageToken] = useState()
+  const isOpen = useSelector((Store) => Store.nav.isMenuOpen)
 
   const observer = useRef();
   const lastVideoCardElement = useCallback((node) => {
@@ -57,7 +59,7 @@ const VideoContainer = () => {
   };
 
   return (
-    <div className="flex justify-evenly flex-wrap mt-3">
+    <div className={isOpen ? "main-container" : "main-container-close"}>
       {videos?.map((video, index) => {
         if (videos?.length === index + 1) {
           return (

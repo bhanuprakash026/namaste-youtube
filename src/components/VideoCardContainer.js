@@ -6,7 +6,7 @@ const VideoCardContainer = ({ info }) => {
   const isOpen = useSelector((Store) => Store.nav.isMenuOpen)
 
   return (
-    <div className={`${isOpen ? "video-card-container" : "video-card-container-close"}`}> 
+    <div className={`${isOpen ? "video-card-container" : "video-card-container-close"} flex-1`}> 
       <img className={`rounded-xl ${isOpen ? "video-title"  : "video-title-close"}`} src={info?.snippet?.thumbnails?.medium?.url} alt="thumbnail" />
       <p className='video-title font-bold'>{info?.snippet?.title}</p>
       <p className='font-bold'>{info?.snippet?.channelTitle}</p>
