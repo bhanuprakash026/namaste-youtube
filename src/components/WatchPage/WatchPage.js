@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
@@ -37,7 +37,6 @@ const WatchPage = () => {
     }
   }, [searchParam, videoId])
 
-  // setVideoId(videoId)
   const filterUniqueComment = (commentsArray) => {
     let uniqueComments = []
     let uniqueCommentId = new Set();
@@ -52,18 +51,7 @@ const WatchPage = () => {
     return uniqueComments
   }
 
-  const fetchMoreComments = async () => {
-    try {
-      setIsCommentLoading(true)
-      const data = await fetch(COMMENTS_API + `${videoId}&textFormat=plainText&part=replies&maxResults=10&key=${GOOGLE_API_KEY}&pageToken=${commentsNextPageToken}`)
-      const json = await data.json()
-      setComments((prevState) => filterUniqueComment([...prevState, ...json?.items]))
-      setCommentsNextPageToken(json?.nextPageToken)
-      setIsCommentLoading(false)
-    } catch (error) {
-      console.log(error)
-    }
-  }
+
 
   const fetchComments = async () => {
     try {
@@ -108,19 +96,6 @@ const WatchPage = () => {
   }
 
 
-  const fetchMoreSuggestionVideos = useCallback(async () => {
-    try {
-      setIsLoading(true)
-      const response = await fetch(`${SUGGESTIONS_VIDEOS_API}&q=${videoTitle}&maxResults=5&pageToken=${nextPageToken}`)
-      const json = await response.json()
-      setSuggestionsVideos((prevState) => [...prevState, ...json.items])
-      setNextPageToken(json.nextPageToken)
-      setIsLoading(false)
-    } catch (error) {
-      console.error("Error fetching more suggestion videos:", error)
-    }
-  }, [videoTitle, nextPageToken])
-
   useEffect(() => {
     dispatch(closeMenu())
     if (videoId) {
@@ -139,25 +114,7 @@ const WatchPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, videoId, videoTitle])
 
-  // useEffect(() => {
-  //   if (videoId) {
-  //     setVideoDetails(null)
-  //     setSuggestionsVideos([])
-  //     setNextPageToken('')
-  //     getVideoDetails()
-  //     setCommentsNextPageToken('')
-  //     setComments([])
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [videoId])
 
-  // useEffect(() => {
-  //   if (videoTitle) {
-  //     getSuggestionsVideos()
-  //     fetchComments()
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [videoTitle])
   console.log("videoDetails:--", videoDetails)
 
   const channelName = videoDetails?.items[0]?.snippet?.channelTitle.split(" ").join("")
@@ -193,7 +150,7 @@ const WatchPage = () => {
             <button className='self-end font-poppins font-bold' onClick={() => setHideVideoDescription(!hideVideoDescription)}>{hideVideoDescription ? "Show More" : 'Show less'}</button>
           </div>
           <div className='my-5'>
-            <CommentsContainer videoId={videoId} comments={comments} getMoreComments={fetchMoreComments} isCommentsLoading={isCommentsLoading} />
+            <CommentsContainer videoId={videoId} comments={comments} isCommentsLoading={isCommentsLoading} firstNextPageToken={commentsNextPageToken} />
           </div>
         </div>
       </div>
@@ -203,7 +160,7 @@ const WatchPage = () => {
             <LiveChat />
           </div>
         }
-        <SuggestionVideo videoId={videoId} isLoading={isLoading} suggestionsVideos={suggestionsVideos} getMoreSuggestionsVideos={fetchMoreSuggestionVideos} />
+        <SuggestionVideo videoId={videoId} isLoading={isLoading} suggestionsVideos={suggestionsVideos} firstSuggestionsVideosToken={nextPageToken} videoTitle={videoTitle} />
         {isLoading && <BeatLoader color='blue' />}
       </div>
     </div>
