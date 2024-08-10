@@ -22,10 +22,6 @@ function Channel() {
     } catch (error) {
       console.log(error)
     }
-
-
-
-
   };
 
   useEffect(() => {

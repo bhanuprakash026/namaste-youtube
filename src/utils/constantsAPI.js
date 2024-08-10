@@ -3,8 +3,9 @@ export const YOUTUBE_VIDEO_API = "https://youtube.googleapis.com/youtube/v3/vide
 export const YOUTUBE_SEARCH_API = "http://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q="
 export const COMMENTS_API = "https://www.googleapis.com/youtube/v3/commentThreads?part=snippet&videoId="
 export const LIVE_CHAT_COUNT = 25
-export const VIDEO_DETAILS = 'https://www.googleapis.com/youtube/v3/videos?part=snippet&id='
+export const VIDEO_DETAILS = 'https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id='
 export const SUGGESTIONS_VIDEOS_API = 'https://youtube.googleapis.com/youtube/v3/search?part=snippet&type=video&key='+ GOOGLE_API_KEY
 export const channelIdByName = 'https://www.googleapis.com/youtube/v3/search?part=snippet&type=channel&key='+ GOOGLE_API_KEY
 export const channelDetailsAPI = 'https://www.googleapis.com/youtube/v3/channels?part=snippet,contentDetails,brandingSettings,statistics&id='
 export const API = 'https://www.googleapis.com/youtube/v3/channels?part=snippet,contentDetails,brandingSettings,statistics&id=UCOJlrO9zmDYSlIKrwbUg1hQ&key=AIzaSyBD2d7tb5kQCuXYyPXE3049oZ0aiqr4Hws'
+export const searchAPI = 'https://youtube.googleapis.com/youtube/v3/search?part=snippet&type=video,playlists&key='+ GOOGLE_API_KEY

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleMenu } from "../redux/navSlice";
 import { YOUTUBE_SEARCH_API } from "../utils/constantsAPI";
 import { cacheResult } from "../redux/searchSlice";
+import { useNavigate } from 'react-router-dom';
 
 const Head = () => {
   const [searchQuery, setSearchQuery] = useState("")
@@ -12,6 +13,7 @@ const Head = () => {
   const dispatch = useDispatch()
   const searchCache = useSelector((Store) => Store.search)
   const suggestionsRef = useRef(null)
+  const navigate = useNavigate();
 
   useEffect(() => {
     let handler = (e) => {
@@ -53,6 +55,15 @@ const Head = () => {
     dispatch(toggleMenu())
   }
 
+  const handleSearch = (event) => {
+    if (searchQuery.length > 4) {
+      if (event.key === 'Enter') {
+        navigate(`/results?search_query=${encodeURIComponent(searchQuery)}`);
+        setShowSuggestionsList(!showSuggestionsList)
+      }
+    }
+  }
+
   return (
 
     <div className="navbar grid grid-flow-col shadow-lg p-4">
@@ -70,6 +81,7 @@ const Head = () => {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           onFocus={() => setShowSuggestionsList(true)}
+          onKeyUp={handleSearch}
         />
         <button className="border bg-slate-100 border-gray-400 py-2 px-3 rounded-r-full"><Search color='gray' /></button>
         {(suggestionsList.length > 0 && showSuggestionsList) && (

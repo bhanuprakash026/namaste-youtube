@@ -1,0 +1,40 @@
+.card-container {
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.img-container {
+  width: 30vw;
+}
+
+.image {
+  width: 100%;
+  aspect-ratio: 3/2;
+  object-fit: contain;
+  padding: 0;
+}
+
+.des-wrapper {
+  flex: 1;
+  text-align: left;
+  padding-top: 27px;
+}
+
+.title-header {
+  font-size: 20px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+/* Truncate the description without affecting the image */
+.description {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* Number of lines to show */
+  -webkit-box-orient: vertical;
+  line-clamp: 1;
+  box-orient: vertical;
+  text-overflow: ellipsis;
+}

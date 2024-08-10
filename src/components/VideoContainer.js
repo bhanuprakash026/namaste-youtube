@@ -36,7 +36,6 @@ const VideoContainer = () => {
       const json = await data.json();
       setVideo((prevState) => [...prevState, ...json?.items]);
       setNextPageToken(json?.nextPageToken)
-      console.log('fetchMoreVideos',json)
     } catch (error) {
       console.log(error);
     } finally {
@@ -49,7 +48,6 @@ const VideoContainer = () => {
       const data = await fetch(YOUTUBE_VIDEO_API);
       const json = await data.json();
       setVideo((prevState) => [...prevState, ...json?.items]);
-      console.log(json)
       setNextPageToken(json?.nextPageToken)
     } catch (error) {
       console.log(error);

@@ -30,7 +30,6 @@ const useInfiniteScroll = (apiEndPoint, initialData, initialNextPageToken) => {
     });
     if (node) observer.current.observe(node);
   }, [loading, fetchMoreData]);
-  console.log("data logging fron CH:--", data)
 
   return { data, lastElementRef, loading };
 };
