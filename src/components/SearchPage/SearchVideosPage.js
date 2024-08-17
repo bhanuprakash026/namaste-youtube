@@ -6,47 +6,57 @@ import SearchVideoCard from './SearchVideoCard'
 
 
 const SearchVideosPage = () => {
-    const [searchParam] = useSearchParams()
-    const [videos, setVideos] = useState([]);
-    const param = searchParam.get('search_query')
+  const [searchParam] = useSearchParams()
+  const [videos, setVideos] = useState([]);
+  const [nextPageToken, setNextPageToken] = useState('');
+  const [isLoading, setIsLoading] = useState(false)
+  const param = searchParam.get('search_query')
 
-    async function fetchSearchResults() {
-        const data = await fetch(`${searchAPI}&q=${param}&maxResults=30`)
-        const json = await data.json()
-        const list = json.items?.map(item => item.id.videoId).join(',')
-        const channelIdsList = json.items?.map(item => item.snippet?.channelId).join(',')
-        console.log(channelIdsList)
-        fetchVideoDetails(list)
+  async function fetchSearchResults() {
+    try {
+      setIsLoading(true)
+      const data = await fetch(`${searchAPI}&q=${param}&maxResults=30`)
+      const json = await data.json()
+      setNextPageToken(json?.nextPageToken)
+      const list = json.items?.map(item => item.id.videoId).join(',')
+      fetchVideoDetails(list)
+    } catch (error) {
+      throw new Error(error);
     }
+  }
 
-    const fetchVideoDetails = (videoIds) => {
-        fetch(`${VIDEO_DETAILS}${videoIds}&key=${GOOGLE_API_KEY}`)
-          .then(response => response.json())
-          .then(data => {
-            const videoDetails = data.items.map(video => ({
-              id: video.id,
-              title: video.snippet.title,
-              description: video.snippet.description,
-              thumbnails: video.snippet.thumbnails,
-              channelTitle: video.snippet.channelTitle,
-              channelLink: `https://www.youtube.com/channel/${video.snippet.channelId}`,
-              publishedAt: video.snippet.publishedAt,
-              viewCount: video.statistics.viewCount,
-            }));
-            console.log("videoDetails:--", videoDetails)
-            setVideos(videoDetails);
-          });
-      };
+  const fetchVideoDetails = (videoIds) => {
+    try {
+      fetch(`${VIDEO_DETAILS}${videoIds}&key=${GOOGLE_API_KEY}`)
+        .then(response => response.json())
+        .then(data => {
+          const videoDetails = data.items.map(video => ({
+            id: video.id,
+            title: video.snippet.title,
+            description: video.snippet.description,
+            thumbnails: video.snippet.thumbnails,
+            channelTitle: video.snippet.channelTitle,
+            channelLink: `https://www.youtube.com/channel/${video.snippet.channelId}`,
+            publishedAt: video.snippet.publishedAt,
+            viewCount: video.statistics.viewCount,
+          }));
+          setIsLoading(false)
+          setVideos(videoDetails);
+        });
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
 
-    useEffect(() => {
-        fetchSearchResults()
-    }, [searchParam])
+  useEffect(() => {
+    fetchSearchResults()
+  }, [searchParam])
 
-    return (
-        <div>
-            <SearchVideoCard videos={videos} />
-        </div>
-    )
+  return (
+    <div>
+      <SearchVideoCard videos={videos} initialPageToken={nextPageToken} isLoading={isLoading} />
+    </div>
+  )
 }
 
 export default SearchVideosPage

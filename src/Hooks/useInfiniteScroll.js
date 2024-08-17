@@ -1,8 +1,9 @@
 import { useState, useCallback, useRef } from 'react';
 
-const useInfiniteScroll = (apiEndPoint, initialData, initialNextPageToken) => {
+const useInfiniteScroll = (apiEndPoint, initialData, initialNextPageToken, isPrimary = true) => {
   const [data, setData] = useState(initialData || []);
   const [loading, setLoading] = useState(false);
+  const [currentJson, setCurrentJson] = useState({})
   const [nextPageToken, setNextPageToken] = useState(initialNextPageToken);
 
   const fetchMoreData = useCallback(async () => {
@@ -10,14 +11,15 @@ const useInfiniteScroll = (apiEndPoint, initialData, initialNextPageToken) => {
       setLoading(true);
       const response = await fetch(`${apiEndPoint}&pageToken=${nextPageToken}`);
       const json = await response.json();
-      setData((prevState) => [...prevState, ...json.items]); // Adjusted to access the correct data structure
+      setCurrentJson(json)
+      setData((prevState) => [...prevState, ...json?.items]); // Adjusted to access the correct data structure
       setNextPageToken(json.nextPageToken);
     } catch (error) {
       console.error(error);
     } finally {
       setLoading(false);
     }
-  }, [apiEndPoint, nextPageToken]);
+  }, [apiEndPoint, nextPageToken, isPrimary]);
 
   const observer = useRef();
   const lastElementRef = useCallback((node) => {
@@ -31,7 +33,7 @@ const useInfiniteScroll = (apiEndPoint, initialData, initialNextPageToken) => {
     if (node) observer.current.observe(node);
   }, [loading, fetchMoreData]);
 
-  return { data, lastElementRef, loading };
+  return { data, lastElementRef, loading, currentJson, nextPageToken};
 };
 
 export default useInfiniteScroll;
