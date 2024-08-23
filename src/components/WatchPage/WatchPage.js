@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux'
 import { useSearchParams } from 'react-router-dom'
 import { closeMenu } from '../../redux/navSlice'
 import CommentsContainer from './CommentsContainer'
-import { COMMENTS_API, GOOGLE_API_KEY } from '../../utils/constantsAPI'
+import { channelDetailsAPI, COMMENTS_API, GOOGLE_API_KEY } from '../../utils/constantsAPI'
 import LiveChat from '../LiveChat'
 import SuggestionVideo from './SuggestionVideo'
 import './WatchPage.css'
@@ -17,11 +17,13 @@ import { BeatLoader } from 'react-spinners'
 const WatchPage = () => {
   const [videoId, setVideoId] = useState('')
   const [videoDetails, setVideoDetails] = useState(null)
+  const [channelData, setChannelData] = useState(null)
   const [hideVideoDescription, setHideVideoDescription] = useState(true)
   const [videoTitle, setVideoTitle] = useState('')
   const [suggestionsVideos, setSuggestionsVideos] = useState([])
   const [nextPageToken, setNextPageToken] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  
   // comments part
   const [comments, setComments] = useState([]);
   const [isCommentsLoading, setIsCommentLoading] = useState(false)
@@ -35,6 +37,9 @@ const WatchPage = () => {
     if (newVideoId && newVideoId !== videoId) {
       setVideoId(newVideoId)
     }
+    // const channelData = await fetch(channelDetailsAPI + `${channelId}&key=${GOOGLE_API_KEY}`)
+    // const channelDataJson = await channelData.json()
+
   }, [searchParam, videoId])
 
   const filterUniqueComment = (commentsArray) => {
@@ -51,7 +56,7 @@ const WatchPage = () => {
     return uniqueComments
   }
 
-
+  console.log("videoDetails:--", videoDetails)
 
   const fetchComments = async () => {
     try {
@@ -83,6 +88,11 @@ const WatchPage = () => {
     try {
       const data = await fetch(VIDEO_DETAILS + `${videoId}&key=${GOOGLE_API_KEY}`)
       const json = await data.json()
+      const channelId = json?.items[0]?.snippet?.channelId
+      const channelDetails = await fetch(channelDetailsAPI + `${channelId}&key=${GOOGLE_API_KEY}`)
+      const channelDetailsJson = await channelDetails.json()
+      setChannelData(channelDetailsJson)
+
       if (json.items && json.items.length > 0) {
         setVideoDetails(json)
         setVideoTitle(json.items[0]?.snippet?.title)

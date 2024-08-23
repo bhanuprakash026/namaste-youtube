@@ -1,0 +1,30 @@
+.page-container{
+    width: 90%;
+    margin: auto;
+}
+
+.channel-logo-container{
+    margin: auto;
+    width: 90%;
+}
+
+.description {
+    display: -webkit-box; /* For Webkit-based browsers (Chrome, Safari) */
+    -webkit-box-orient: vertical; /* For Webkit-based browsers */
+    -webkit-line-clamp: 1; /* For Webkit-based browsers */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    
+    /* Standard (Fallback) */
+    line-clamp: 1; /* This is non-standard but won't cause warnings */
+    box-orient: vertical; /* Non-standard, used as fallback */
+  }
+  
+  .description.expanded {
+    -webkit-line-clamp: unset; /* Remove the line clamp for expanded view */
+    line-clamp: unset; /* Fallback for removing the line clamp */
+    white-space: normal;
+  }
+  
+  
