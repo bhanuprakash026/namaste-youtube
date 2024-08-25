@@ -38,6 +38,18 @@
   font-weight: 500;
 }
 
+.main-conter-nav-open {
+  flex: 1;
+  display: flex;
+  overflow-x: hidden;
+}
+
+.main-conter-nav-close {
+  width: 100vw;
+  display: flex;
+  overflow-x: hidden;
+}
+
 .buttons-container {
   overflow-x: auto;
   scrollbar-width: none;
@@ -130,7 +142,7 @@
   position: sticky;
   left: 0;
   top: 100px;
-  width: 15%
+  width: 15vw
 }
 
 .main-container {

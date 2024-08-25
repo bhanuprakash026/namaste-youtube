@@ -1,30 +1,77 @@
-.page-container{
-    width: 90%;
-    margin: auto;
+.page-container {
+  width: 100vw;
+  margin: auto;
+  /* display: flex;
+  justify-content: center; */
 }
 
-.channel-logo-container{
-    margin: auto;
-    width: 90%;
+.channel-logo-container {
+  margin: auto;
+  width: 90%;
 }
 
 .description {
-    display: -webkit-box; /* For Webkit-based browsers (Chrome, Safari) */
-    -webkit-box-orient: vertical; /* For Webkit-based browsers */
-    -webkit-line-clamp: 1; /* For Webkit-based browsers */
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: normal;
-    
-    /* Standard (Fallback) */
-    line-clamp: 1; /* This is non-standard but won't cause warnings */
-    box-orient: vertical; /* Non-standard, used as fallback */
-  }
+  /* display: -webkit-box;
+  /* For Webkit-based browsers (Chrome, Safari) */
+  /* -webkit-box-orient: vertical; */
+  /* For Webkit-based browsers */
+  /* -webkit-line-clamp: 1; */
+  /* For Webkit-based browsers */
+  /* overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal; */
+
+  /* Standard (Fallback) */
+  /* line-clamp: 1; */
+  /* This is non-standard but won't cause warnings */
+  /* box-orient: vertical; */
+  /* Non-standard, used as fallback */
+}
+
+
+
+.parent-container {
+  display: flex;
+  justify-content: center;
+  /* Center the child horizontally */
+  width: 100%;
+  /* Ensure it takes full width of its parent */
+}
+
+.scroll-container-wrapper {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  width: 100%;
+}
+
+.scrollContainer {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  white-space: nowrap;
+  gap: 10px;
+  /* Adds space between video boxes */
+  flex-grow: 1;
+  padding: 10px 0;
+  /* Optional: Adds vertical padding to avoid touching top/bottom edges */
+}
+
+.video-box {
+  min-width: 360px; 
+  height: 300px; 
+  flex-shrink: 0;
+  object-fit: cover;
+  text-align: start;
   
-  .description.expanded {
-    -webkit-line-clamp: unset; /* Remove the line clamp for expanded view */
-    line-clamp: unset; /* Fallback for removing the line clamp */
-    white-space: normal;
-  }
-  
-  
+}
+
+.scrollContainer::-webkit-scrollbar {
+  display: none;
+  /* Hide scrollbar for WebKit browsers */
+}
+
+.scrollContainer {
+  scrollbar-width: none;
+  /* Hide scrollbar for Firefox */
+}
