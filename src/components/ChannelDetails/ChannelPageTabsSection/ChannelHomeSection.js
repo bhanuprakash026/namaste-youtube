@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { GOOGLE_API_KEY, LATEST_VIDEOS_IN_A_CHANNEL, VIDEO_DETAILS } from '../../../utils/constantsAPI';
+import { GOOGLE_API_KEY, LATEST_VIDEOS_IN_A_CHANNEL, SHORTS_VIDEOS_IN_CHANNEL, VIDEO_DETAILS } from '../../../utils/constantsAPI';
 import '../index.css';
-import { useSelector } from 'react-redux';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { formatViewCount, timeAgo } from '../../../Helpers/helper';
 
-const ChannelHomeSection = ({ uploads }) => {
-    const isNavOpen = useSelector((store) => store.nav.isMenuOpen);
+const ChannelHomeSection = ({ uploads, channelId }) => {
     const [latestVideos, setLatestVideos] = useState([]);
+    const [HomeShortVideos, setHomeShortVideos] = useState([])
     const scrollBarRef = useRef();
+    const scrollBarRefShorts = useRef()
 
     const scrollLeft = () => {
         scrollBarRef.current.scrollLeft -= 900;
@@ -18,12 +18,19 @@ const ChannelHomeSection = ({ uploads }) => {
         scrollBarRef.current.scrollLeft += 900;
     };
 
+    const scrollLeftShorts = () => {
+        scrollBarRefShorts.current.scrollLeft -= 900;
+    };
+
+    const scrollRightShorts = () => {
+        scrollBarRefShorts.current.scrollLeft += 900;
+    };
+
     const fetchVideoDetails = async (videoIds) => {
         try {
             const response = await fetch(`${VIDEO_DETAILS}${videoIds}&key=${GOOGLE_API_KEY}`);
             const data = await response.json();
             setLatestVideos(data.items);
-            console.log('latestVideos:-', latestVideos)
         } catch (error) {
             console.error(error);
         }
@@ -33,16 +40,41 @@ const ChannelHomeSection = ({ uploads }) => {
         try {
             const response = await fetch(`${LATEST_VIDEOS_IN_A_CHANNEL}&playlistId=${uploads}&key=${GOOGLE_API_KEY}`);
             const data = await response.json();
-            const videoIds = data.items.map(e => e.contentDetails.videoId).join(',');
+            console.log('latestVideos Data:--', data)
+            const videoIds = data?.items?.map(e => e.contentDetails.videoId).join(',');
             fetchVideoDetails(videoIds);
         } catch (error) {
             console.error(error);
         }
     };
 
+    const fetchShortsVideoDetails = async (videoIds) => {
+        try {
+            const response = await fetch(`${VIDEO_DETAILS}${videoIds}&key=${GOOGLE_API_KEY}`);
+            const data = await response.json();
+            setHomeShortVideos(data.items);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    const getHomeShortVideos = async () => {
+        try {
+            const data = await fetch(`${SHORTS_VIDEOS_IN_CHANNEL}&channelId=${channelId}`)
+            const json = await data.json()
+            const shortIds = json?.items?.map(e => e.id?.videoId).join(',');
+            console.log('Home Shorts Videos Data:--', json)
+            console.log("shortIds:--", shortIds)
+            fetchShortsVideoDetails(shortIds)
+        } catch (error) {
+
+        }
+    }
+
     useEffect(() => {
         getLatestVideos();
-    }, [uploads]);
+        getHomeShortVideos()
+    }, [uploads, channelId]);
 
     if (latestVideos.length === 0) return <h1 className='text-xl'>Loading.....</h1>;
 
@@ -51,8 +83,8 @@ const ChannelHomeSection = ({ uploads }) => {
             <div className='flex justify-between'>
                 <h1 className='text-2xl font-poppins font-bold'>For You</h1>
                 <div className='gap-7 flex'>
-                    <ArrowLeft onClick={scrollLeft} className='cursor-pointer' size={40} strokeWidth={0.5} />
-                    <ArrowRight onClick={scrollRight} className='cursor-pointer' size={40} strokeWidth={0.5} />
+                    <ArrowLeft key='1001' onClick={scrollLeft} className='cursor-pointer' size={40} strokeWidth={0.5} />
+                    <ArrowRight key='1002' onClick={scrollRight} className='cursor-pointer' size={40} strokeWidth={0.5} />
                 </div>
             </div>
             <div className='scroll-container-wrapper'>
@@ -70,6 +102,35 @@ const ChannelHomeSection = ({ uploads }) => {
                                 allowFullScreen
                             />
 
+                            <h6 title={video?.snippet?.title} className="overflow-hidden text-ellipsis whitespace-nowrap max-w-[360px]">{video?.snippet?.title}</h6>
+                            <div className='flex gap-7'>
+                                <p>{formatViewCount(video?.statistics?.viewCount)}</p>
+                                <p>{timeAgo(video?.snippet?.publishedAt)}</p>
+                            </div>
+
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            <hr className='mb-7'/>
+
+            <div className='flex justify-between'>
+                <h1 className='text-2xl font-poppins flex items-center font-bold'><span><img className='w-[50px] h-[60px]' src="https://cdn.pixabay.com/photo/2021/05/05/12/16/shorts-png-6230962_1280.png"/></span> Shorts</h1>
+                <div className='gap-7 flex'>
+                    <ArrowLeft key='1003' onClick={scrollLeftShorts} className='cursor-pointer' size={40} strokeWidth={0.5} />
+                    <ArrowRight key='1004' onClick={scrollRightShorts} className='cursor-pointer' size={40} strokeWidth={0.5} />
+                </div>
+            </div>
+            <div className='scroll-container-wrapper'>
+                <div className='scrollContainer gap-7 flex-nowrap overflow-x-auto scroll-smooth' ref={scrollBarRefShorts}>
+                    {HomeShortVideos?.map((video) => (
+                        <div className='w-[200px] cursor-pointer relative h-auto' key={video.id}>
+                            <img
+                                className='w-full max-h-[720px] max-w-[405px] object-cover aspect-[83/151] rounded-lg'
+                                src={`${video.snippet?.thumbnails?.high?.url}?sqp=-oaymwEdCJUDENAFSFWQAgHyq4qpAwwIARUAAIhCcAHAAQY=&rs=AOn4CLBlqNASOzrPwHJhr1y_Dc7IUb5iXA`}
+                                alt='thumbnail'
+                            />
                             <h6 title={video?.snippet?.title} className="overflow-hidden text-ellipsis whitespace-nowrap max-w-[360px]">{video?.snippet?.title}</h6>
                             <div className='flex gap-7'>
                                 <p>{formatViewCount(video?.statistics?.viewCount)}</p>

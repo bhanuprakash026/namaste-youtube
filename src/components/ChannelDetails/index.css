@@ -10,26 +10,6 @@
   width: 90%;
 }
 
-.description {
-  /* display: -webkit-box;
-  /* For Webkit-based browsers (Chrome, Safari) */
-  /* -webkit-box-orient: vertical; */
-  /* For Webkit-based browsers */
-  /* -webkit-line-clamp: 1; */
-  /* For Webkit-based browsers */
-  /* overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: normal; */
-
-  /* Standard (Fallback) */
-  /* line-clamp: 1; */
-  /* This is non-standard but won't cause warnings */
-  /* box-orient: vertical; */
-  /* Non-standard, used as fallback */
-}
-
-
-
 .parent-container {
   display: flex;
   justify-content: center;
@@ -59,11 +39,28 @@
 
 .video-box {
   min-width: 360px; 
-  height: 300px; 
+  height: 270px; 
   flex-shrink: 0;
   object-fit: cover;
   text-align: start;
   
+}
+
+.short-video-box {
+  position: relative;
+  width: 200px; /* Fixed width */
+  height: auto;
+  
+}
+
+.short-img {
+  width: 100%; /* Ensures image fits the width of the container */
+  height: auto; /* Maintains aspect ratio */
+  max-height: 720px; /* Limits the maximum height to intrinsic height */
+  max-width: 405px; /* Limits the maximum width to intrinsic width */
+  object-fit: cover;
+  aspect-ratio: 83/151;
+  border-radius: 10px;
 }
 
 .scrollContainer::-webkit-scrollbar {
