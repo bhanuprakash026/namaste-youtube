@@ -53,7 +53,7 @@ const SearchVideosPage = () => {
   }, [searchParam])
 
   return (
-    <div>
+    <div className='overflow-hidden'>
       <SearchVideoCard videos={videos} initialPageToken={nextPageToken} isLoading={isLoading} />
     </div>
   )

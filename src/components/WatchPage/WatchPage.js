@@ -131,7 +131,7 @@ const WatchPage = () => {
       <div className={`${isOpen ? 'iFrame-comments-container-open' : "iFrame-comments-container-close"}`}>
         <iframe
           width="100%"
-          height={`${isOpen ? "530px" : "590px"}`}
+          height={`${isOpen ? "630px" : "690px"}`}
           className='rounded-xl'
           src={`https://www.youtube.com/embed/${videoId}`}
           title="YouTube video player"

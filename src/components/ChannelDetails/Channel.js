@@ -43,6 +43,7 @@ const Channel = () => {
       const json = await data.json();
       const channelId = json?.items[0]?.id?.channelId;
       setChannelId(channelId)
+      console.log('channelId:--', channelId)
       const channelData = await fetch(channelDetailsAPI + `${channelId}&key=${GOOGLE_API_KEY}`);
       const channelDataJson = await channelData.json();
       setIsLoading(false);
@@ -54,7 +55,7 @@ const Channel = () => {
 
   useEffect(() => {
     fetchChannelId();
-  }, []);
+  }, [channelName]);
 
   if (isLoading) <h1>Loading</h1>
 
@@ -121,9 +122,12 @@ const Channel = () => {
 
       <hr className='' />
 
+      {console.log('uploads:--', channelDetails?.items[0]?.contentDetails?.relatedPlaylists?.uploads)}
+      {console.log('channelId:--', channelId)}
+
       {activeTab === 'HOME' && <div className='overflow-hidden'><ChannelHomeSection uploads={channelDetails?.items[0]?.contentDetails?.relatedPlaylists?.uploads} channelId={channelId} /></div>}
-      {activeTab === 'VIDEOS' && <ChannelVideosSection />}
-      {activeTab === 'SHORTS' && <ChannelShortsSection />}
+      {activeTab === 'VIDEOS' && <div className='overflow-hidden'><ChannelVideosSection uploads={channelDetails?.items[0]?.contentDetails?.relatedPlaylists?.uploads} channelId={channelId} /></div>}
+      {activeTab === 'SHORTS' && <div className='overflow-hidden'><ChannelShortsSection uploads={channelDetails?.items[0]?.contentDetails?.relatedPlaylists?.uploads} channelId={channelId} /></div>}
 
     </div>
 

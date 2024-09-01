@@ -11,7 +11,8 @@ export const API = 'https://www.googleapis.com/youtube/v3/channels?part=snippet,
 export const searchAPI = 'https://youtube.googleapis.com/youtube/v3/search?part=snippet&type=video,playlists&key='+ GOOGLE_API_KEY
 export const LATEST_VIDEOS_IN_A_CHANNEL = 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&maxResults=12&playlistId='
 export const SHORTS_VIDEOS_IN_CHANNEL = 'https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=25&type=video&videoDuration=short&key='+ GOOGLE_API_KEY
-// export const POPULAR_VIDEOS_IN_A_CHANNEL = 'https://www.googleapis.com/youtube/v3/search?part=snippet&order=viewCount&type=video&maxResults=25&channelId=UCaooZvg_gT3gagtkbqJCxMw&key='
+export const POPULAR_VIDEOS_IN_CHANNEL = 'https://www.googleapis.com/youtube/v3/search?part=snippet&order=viewCount&type=video&maxResults=15&key=' + GOOGLE_API_KEY
+export const VIDEOS_IN_CHANNEL = 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&maxResults=20&key=' + GOOGLE_API_KEY + '&playlistId='
 
 // const apurva19_API_KEY9 = "AIzaSyBD2d7tb5kQCuXYyPXE3049oZ0aiqr4Hws";
 // const apurva19_API_KEY10 = "AIzaSyArnnLGA0YQJKJXjiJsv5RhQMoPyXoKcUE";

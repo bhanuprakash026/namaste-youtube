@@ -9,6 +9,7 @@ import WatchPage from './components/WatchPage/WatchPage';
 import Channel from './components/ChannelDetails/Channel';
 import ErrorPage from './components/ErrorPage';
 import SearchVideosPage from './components/SearchPage/SearchVideosPage';
+import ShortPage from './components/Shorts/ShortPage';
 
 const appRouter = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ const appRouter = createBrowserRouter([
       {
         path: '/results',
         element: <SearchVideosPage />,
+      },
+      {
+        path: '/shorts/:id',
+        element: <ShortPage />,
       },
     ],
     errorElement: <ErrorPage />,
