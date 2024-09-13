@@ -10,13 +10,13 @@
 .iFrame-comments-container-open {
   display: flex;
   flex-direction: column;
-  width: 65%;
+  width: 60%;
   overflow: hidden;
 }
 
 .iFrame-comments-container-close {
   display: flex;
-  width: 67%;
+  width: 63%;
   flex-direction: column;
   overflow: hidden;
 }

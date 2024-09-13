@@ -3,10 +3,15 @@ import React, { useState, useEffect } from 'react'
 import '../../ChannelDetails/index.css'
 import { formatViewCount, timeAgo } from '../../../Helpers/helper'
 import { VIDEOS_IN_CHANNEL } from '../../../utils/constantsAPI'
+import useInfiniteScroll from '../../../Hooks/useInfiniteScroll'
+import { BeatLoader } from 'react-spinners'
+import { Link } from 'react-router-dom'
 
 const ChannelVideosSection = ({ uploads, channelId }) => {
   const [videos, setVideos] = useState([])
   const [isLoading, setIsLoading] = useState(false)
+  const [pageToken, setPageToken] = useState('')
+
   // const video = {
   //   "kind": "youtube#playlistItem",
   //   "etag": "BqWVD1YrGES721vtokk5KbWPLU8",
@@ -60,6 +65,7 @@ const ChannelVideosSection = ({ uploads, channelId }) => {
       setIsLoading(true)
       const data = await fetch(`${VIDEOS_IN_CHANNEL}${uploads}`)
       const json = await data.json()
+      setPageToken(json?.nextPageToken)
       setVideos(json?.items)
       setIsLoading(false)
     } catch (error) {
@@ -71,6 +77,14 @@ const ChannelVideosSection = ({ uploads, channelId }) => {
     getVideosInChannel()
   }, [])
 
+  const { data, lastElementRef, loading, currentJson, nextPageToken } = useInfiniteScroll(`${VIDEOS_IN_CHANNEL}${uploads}`, videos, pageToken)
+  useEffect(() => {
+    if (currentJson?.items && nextPageToken !== undefined && nextPageToken !== null && nextPageToken !== '') {
+      setVideos((prevVideos) => [...prevVideos, ...currentJson.items]);
+      setPageToken(nextPageToken)
+    }
+  }, [currentJson]);
+
   if (isLoading) {
     return <h1 className='text-xl font-bold'>Loading....</h1>
   }
@@ -78,26 +92,31 @@ const ChannelVideosSection = ({ uploads, channelId }) => {
   return (
     <div className='flex items-start flex-col mt-5'>
       <div className='flex gap-5 flex-wrap'>
-        {videos.map((video) => (
-          <div className='video-box' key={video.id}>
-            <iframe
-              width="400"
-              height="220"
-              src={`https://www.youtube.com/embed/${video?.snippet?.resourceId?.videoId}`}
-              title={video.snippet.title}
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerPolicy="strict-origin-when-cross-origin"
-              allowFullScreen
-            />
+        {videos.map((video, index) => (
+          <Link to={`/watch?v=${video?.snippet?.resourceId?.videoId}`}>
+            <React.Fragment key={video.id}>
+              <div className='video-box' ref={index === videos.length - 1 ? lastElementRef : null} key={video.id}>
+                <iframe
+                  width="400"
+                  height="220"
+                  src={`https://www.youtube.com/embed/${video?.snippet?.resourceId?.videoId}`}
+                  title={video.snippet.title}
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                />
 
-            <h6 title={video?.snippet?.title} className="overflow-hidden text-ellipsis whitespace-nowrap max-w-[360px]">{video?.snippet?.title}</h6>
-            <div className='flex'>
-              <p>{timeAgo(video?.snippet?.publishedAt)}</p>
-            </div>
+                <h6 title={video?.snippet?.title} className="overflow-hidden text-ellipsis whitespace-nowrap max-w-[360px]">{video?.snippet?.title}</h6>
+                <div className='flex'>
+                  <p>{timeAgo(video?.snippet?.publishedAt)}</p>
+                </div>
 
-          </div>
+              </div>
+            </React.Fragment>
+          </Link>
         ))}
+        {loading && <BeatLoader color='blue' />}
       </div>
     </div>
   )

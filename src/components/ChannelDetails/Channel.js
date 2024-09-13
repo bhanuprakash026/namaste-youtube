@@ -43,7 +43,6 @@ const Channel = () => {
       const json = await data.json();
       const channelId = json?.items[0]?.id?.channelId;
       setChannelId(channelId)
-      console.log('channelId:--', channelId)
       const channelData = await fetch(channelDetailsAPI + `${channelId}&key=${GOOGLE_API_KEY}`);
       const channelDataJson = await channelData.json();
       setIsLoading(false);
