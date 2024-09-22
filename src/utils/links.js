@@ -21,7 +21,7 @@ export const tabsList = [
 
 export const sideNavLinks = [
   {icon: <IoHome size={25} style={{marginRight: 20}}/>, displayText: "Home", navLinkId: "HOME", link: "/"},
-  {icon: <SiYoutubeshorts size={25} style={{marginRight: 20}}/>, displayText: "Shorts", navLinkId: "SHORTS", link: "shorts"},
+  {icon: <SiYoutubeshorts size={25} style={{marginRight: 20}}/>, displayText: "Shorts", navLinkId: "SHORTS", link: "shorts/:id"},
   {icon: <MdOutlineSubscriptions size={25} style={{marginRight: 20}}/>, displayText: "Subscriptions", navLinkId: "SUBSCRIPTIONS", link: "subscriptions"},
   {icon: <FaHistory size={25} style={{marginRight: 20}}/>, displayText: "History", navLinkId: "HISTORY", link: "history"},
 ]
