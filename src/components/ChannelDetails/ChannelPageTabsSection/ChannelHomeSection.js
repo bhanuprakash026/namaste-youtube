@@ -137,12 +137,13 @@ const ChannelHomeSection = ({ uploads, channelId }) => {
                                 referrerPolicy="strict-origin-when-cross-origin"
                                 allowFullScreen
                             />
-
-                            <h6 title={video?.snippet?.title} className="overflow-hidden text-ellipsis whitespace-nowrap max-w-[360px]">{video?.snippet?.title}</h6>
-                            <div className='flex gap-7'>
-                                <p>{formatViewCount(video?.statistics?.viewCount)}</p>
-                                <p>{timeAgo(video?.snippet?.publishedAt)}</p>
-                            </div>
+                            <Link to={`/watch?v=${video.id}`}>
+                                <h6 title={video?.snippet?.title} className="overflow-hidden text-ellipsis whitespace-nowrap max-w-[360px]">{video?.snippet?.title}</h6>
+                                <div className='flex gap-7'>
+                                    <p>{formatViewCount(video?.statistics?.viewCount)}</p>
+                                    <p>{timeAgo(video?.snippet?.publishedAt)}</p>
+                                </div>
+                            </Link>
 
                         </div>
                     ))}
@@ -203,12 +204,13 @@ const ChannelHomeSection = ({ uploads, channelId }) => {
                                 referrerPolicy="strict-origin-when-cross-origin"
                                 allowFullScreen
                             />
-
-                            <h6 title={video?.snippet?.title} className="overflow-hidden text-ellipsis whitespace-nowrap max-w-[360px]">{video?.snippet?.title}</h6>
-                            <div className='flex gap-7'>
-                                <p>{formatViewCount(video?.statistics?.viewCount)}</p>
-                                <p>{timeAgo(video?.snippet?.publishedAt)}</p>
-                            </div>
+                            <Link to={`/watch?v=${video.id}`}>
+                                <h6 title={video?.snippet?.title} className="overflow-hidden text-ellipsis whitespace-nowrap max-w-[360px]">{video?.snippet?.title}</h6>
+                                <div className='flex gap-7'>
+                                    <p>{formatViewCount(video?.statistics?.viewCount)}</p>
+                                    <p>{timeAgo(video?.snippet?.publishedAt)}</p>
+                                </div>
+                            </Link>
 
                         </div>
                     ))}

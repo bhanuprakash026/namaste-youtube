@@ -62,14 +62,19 @@ const ShortsPage = () => {
     }, []);
 
     useEffect(() => {
-        if (id) {
-            fetchSingleShortVideo(id);
-        }
-        fetchShortVideos();
+        if(id) navigate((`/shorts/${id}`));
+        fetchShortVideos()
+
     }, []);
 
+    useEffect(() => {
+        if(window.location.pathname === '/shorts/:id'|| window.location.pathname === '/shorts/undefined') {
+            navigate((`/shorts/${shortVideos[0]?.id?.videoId}`));
+        } 
+    }, [shortVideos])
 
-    
+
+
     const setIndexUp = () => {
         console.log('Current Index:--', currentIndex)
         if (currentIndex > 0) {
@@ -77,7 +82,7 @@ const ShortsPage = () => {
             navigate((`/shorts/${shortVideos[currentIndex]?.id?.videoId}`));
         }
     };
-    
+
     const setIndexDown = () => {
         console.log('Current Index:--', currentIndex)
         if (currentIndex < shortVideos.length - 1 && !isLoading) {
@@ -87,8 +92,6 @@ const ShortsPage = () => {
     };
 
     useEffect(() => {
-        console.log('second useEffect currentIndex:--', currentIndex)
-        console.log('second useEffect shortVideosLength:--', shortVideos.length)
         if (currentIndex === shortVideos.length - 1 && currentIndex !== 0) {
             console.log('Calling useEffect.')
             fetchMoreShortVideos()

@@ -64,8 +64,9 @@ const WatchPage = () => {
       const data = await fetch(COMMENTS_API + `${videoId}&textFormat=plainText&part=replies&maxResults=10&key=${GOOGLE_API_KEY}&pageToken=${commentsNextPageToken}`)
       const json = await data.json()
       setComments((prevState) => filterUniqueComment([...prevState, ...json?.items]))
-      setCommentsNextPageToken(json?.nextPageToken)
-      setIsCommentLoading(false)
+      if (json?.nextPageToken) {
+        setCommentsNextPageToken(json?.nextPageToken);
+      }      setIsCommentLoading(false)
     } catch (error) {
       console.log(error)
     }
@@ -121,8 +122,7 @@ const WatchPage = () => {
       fetchComments()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, videoId, videoTitle])
-
+  }, [ videoId, videoTitle])
 
 
   const channelName = videoDetails?.items[0]?.snippet?.channelTitle.split(" ").join("")

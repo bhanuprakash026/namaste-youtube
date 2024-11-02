@@ -8,27 +8,29 @@ const CommentsContainer = ({ videoId, comments, isLoading, firstNextPageToken })
   const [openCommentId, setOpenCommentId] = useState(null);
   const [commentsData, setCommentsData] = useState([]);
   
+  
+  useEffect(() => {
+    setCommentsData(comments);
+    // eslint-disable-next-line
+  }, [comments]);
+  
   const { data, lastElementRef, loading } = useInfiniteScroll(
     COMMENTS_API + `${videoId}&textFormat=plainText&part=replies&maxResults=10&key=${GOOGLE_API_KEY}`,
     commentsData,
     firstNextPageToken
   );
-
-  useEffect(() => {
-    setCommentsData(comments);
-    // eslint-disable-next-line
-  }, [comments]);
-
+  
   useEffect(() => {
     if (Array.isArray(data) && data.length > 0) {
       setCommentsData((prevState) => [...prevState, ...data]);
     }
   }, [data]);
 
+
   const toggleCommentReply = (commentId) => {
     setOpenCommentId(openCommentId === commentId ? null : commentId);
   };
-
+  
   return (
     <div>
       <h1 className='font-bold font-poppins text-left text-3xl'>Comments</h1>
