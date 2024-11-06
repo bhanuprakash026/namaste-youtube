@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { GOOGLE_API_KEY, LATEST_VIDEOS_IN_A_CHANNEL, POPULAR_VIDEOS_IN_CHANNEL, SHORTS_VIDEOS_IN_CHANNEL, VIDEO_DETAILS } from '../../../utils/constantsAPI';
+import { LATEST_VIDEOS_IN_A_CHANNEL, POPULAR_VIDEOS_IN_CHANNEL, SHORTS_VIDEOS_IN_CHANNEL, VIDEO_DETAILS } from '../../../utils/constantsAPI';
 import '../index.css';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { formatViewCount, timeAgo } from '../../../Helpers/helper';
@@ -39,7 +39,7 @@ const ChannelHomeSection = ({ uploads, channelId }) => {
 
     const fetchVideoDetails = async (videoIds) => {
         try {
-            const response = await fetch(`${VIDEO_DETAILS}${videoIds}&key=${GOOGLE_API_KEY}`);
+            const response = await fetch(`${VIDEO_DETAILS}${videoIds}&key=${process.env.REACT_APP_API_KEY}`);
             const data = await response.json();
             setLatestVideos(data.items);
         } catch (error) {
@@ -49,7 +49,7 @@ const ChannelHomeSection = ({ uploads, channelId }) => {
 
     const getLatestVideos = async () => {
         try {
-            const response = await fetch(`${LATEST_VIDEOS_IN_A_CHANNEL}&playlistId=${uploads}&key=${GOOGLE_API_KEY}`);
+            const response = await fetch(`${LATEST_VIDEOS_IN_A_CHANNEL}&playlistId=${uploads}&key=${process.env.REACT_APP_API_KEY}`);
             const data = await response.json();
             console.log('latestVideos Data:--', data)
             const videoIds = data?.items?.map(e => e.contentDetails.videoId).join(',');
@@ -61,7 +61,7 @@ const ChannelHomeSection = ({ uploads, channelId }) => {
 
     const fetchShortsVideoDetails = async (videoIds) => {
         try {
-            const response = await fetch(`${VIDEO_DETAILS}${videoIds}&key=${GOOGLE_API_KEY}`);
+            const response = await fetch(`${VIDEO_DETAILS}${videoIds}&key=${process.env.REACT_APP_API_KEY}`);
             const data = await response.json();
             setHomeShortVideos(data.items);
         } catch (error) {
@@ -84,7 +84,7 @@ const ChannelHomeSection = ({ uploads, channelId }) => {
 
     const fetchPopularVideos = async (popularVideoIds) => {
         try {
-            const response = await fetch(`${VIDEO_DETAILS}${popularVideoIds}&key=${GOOGLE_API_KEY}`);
+            const response = await fetch(`${VIDEO_DETAILS}${popularVideoIds}&key=${process.env.REACT_APP_API_KEY}`);
             const data = await response.json();
             setPopularVideosIds(data.items);
         } catch (error) {

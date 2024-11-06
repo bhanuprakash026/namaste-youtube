@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { GOOGLE_API_KEY, searchAPI, VIDEO_DETAILS } from '../../utils/constantsAPI'
+import { searchAPI, VIDEO_DETAILS } from '../../utils/constantsAPI'
 import SearchVideoCard from './SearchVideoCard'
 
 
@@ -27,7 +27,7 @@ const SearchVideosPage = () => {
 
   const fetchVideoDetails = (videoIds) => {
     try {
-      fetch(`${VIDEO_DETAILS}${videoIds}&key=${GOOGLE_API_KEY}`)
+      fetch(`${VIDEO_DETAILS}${videoIds}&key=${process.env.REACT_APP_API_KEY}`)
         .then(response => response.json())
         .then(data => {
           const videoDetails = data.items.map(video => ({

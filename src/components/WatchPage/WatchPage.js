@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux'
 import { useSearchParams } from 'react-router-dom'
 import { closeMenu } from '../../redux/navSlice'
 import CommentsContainer from './CommentsContainer'
-import { channelDetailsAPI, COMMENTS_API, GOOGLE_API_KEY } from '../../utils/constantsAPI'
+import { channelDetailsAPI, COMMENTS_API } from '../../utils/constantsAPI'
 import LiveChat from '../LiveChat'
 import SuggestionVideo from './SuggestionVideo'
 import './WatchPage.css'
@@ -37,7 +37,7 @@ const WatchPage = () => {
     if (newVideoId && newVideoId !== videoId) {
       setVideoId(newVideoId)
     }
-    // const channelData = await fetch(channelDetailsAPI + `${channelId}&key=${GOOGLE_API_KEY}`)
+    // const channelData = await fetch(channelDetailsAPI + `${channelId}&key=${process.env.REACT_APP_API_KEY}`)
     // const channelDataJson = await channelData.json()
 
   }, [searchParam, videoId])
@@ -61,7 +61,7 @@ const WatchPage = () => {
   const fetchComments = async () => {
     try {
       setIsCommentLoading(true)
-      const data = await fetch(COMMENTS_API + `${videoId}&textFormat=plainText&part=replies&maxResults=10&key=${GOOGLE_API_KEY}&pageToken=${commentsNextPageToken}`)
+      const data = await fetch(COMMENTS_API + `${videoId}&textFormat=plainText&part=replies&maxResults=10&key=${process.env.REACT_APP_API_KEY}&pageToken=${commentsNextPageToken}`)
       const json = await data.json()
       setComments((prevState) => filterUniqueComment([...prevState, ...json?.items]))
       if (json?.nextPageToken) {
@@ -87,10 +87,10 @@ const WatchPage = () => {
 
   async function getVideoDetails() {
     try {
-      const data = await fetch(VIDEO_DETAILS + `${videoId}&key=${GOOGLE_API_KEY}`)
+      const data = await fetch(VIDEO_DETAILS + `${videoId}&key=${process.env.REACT_APP_API_KEY}`)
       const json = await data.json()
       const channelId = json?.items[0]?.snippet?.channelId
-      const channelDetails = await fetch(channelDetailsAPI + `${channelId}&key=${GOOGLE_API_KEY}`)
+      const channelDetails = await fetch(channelDetailsAPI + `${channelId}&key=${process.env.REACT_APP_API_KEY}`)
       const channelDetailsJson = await channelDetails.json()
       setChannelData(channelDetailsJson)
 

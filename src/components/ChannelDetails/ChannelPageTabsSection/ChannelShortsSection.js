@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { GOOGLE_API_KEY, SHORTS_VIDEOS_IN_CHANNEL, VIDEO_DETAILS } from '../../../utils/constantsAPI';
+import {  SHORTS_VIDEOS_IN_CHANNEL, VIDEO_DETAILS } from '../../../utils/constantsAPI';
 import { formatViewCount, timeAgo } from '../../../Helpers/helper';
 import '../../ChannelDetails/index.css'
 import { Link } from 'react-router-dom';
@@ -15,7 +15,7 @@ const ChannelShortsSection = ({ uploads, channelId }) => {
 
   const fetchShortsVideoDetails = async (videoIds) => {
     try {
-      const response = await fetch(`${VIDEO_DETAILS}${videoIds}&key=${GOOGLE_API_KEY}`);
+      const response = await fetch(`${VIDEO_DETAILS}${videoIds}&key=${process.env.REACT_APP_API_KEY}`);
       const data = await response.json();
       setShortVideos((prevState) => [...prevState, ...data?.items]);
     } catch (error) {

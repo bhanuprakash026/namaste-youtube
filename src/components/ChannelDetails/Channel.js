@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './index.css';
 import ChannelDetailsPopup from './ChannelDetailsPopup';
-import { GOOGLE_API_KEY, channelDetailsAPI, channelIdByName } from '../../utils/constantsAPI';
+import {  channelDetailsAPI, channelIdByName } from '../../utils/constantsAPI';
 import ChannelHomeSection from './ChannelPageTabsSection/ChannelHomeSection'
 import ChannelVideosSection from './ChannelPageTabsSection/ChannelVideosSection';
 import ChannelShortsSection from './ChannelPageTabsSection/ChannelShortsSection';
@@ -43,7 +43,7 @@ const Channel = () => {
       const json = await data.json();
       const channelId = json?.items[0]?.id?.channelId;
       setChannelId(channelId)
-      const channelData = await fetch(channelDetailsAPI + `${channelId}&key=${GOOGLE_API_KEY}`);
+      const channelData = await fetch(channelDetailsAPI + `${channelId}&key=${process.env.REACT_APP_API_KEY}`);
       const channelDataJson = await channelData.json();
       setIsLoading(false);
       setChannelDetails(channelDataJson);

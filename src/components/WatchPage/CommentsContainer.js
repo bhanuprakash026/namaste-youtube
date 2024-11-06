@@ -2,7 +2,7 @@ import React, { useState, useEffect, memo } from 'react';
 import { GoTriangleUp, GoTriangleDown } from "react-icons/go";
 import { BeatLoader } from 'react-spinners';
 import useInfiniteScroll from '../../Hooks/useInfiniteScroll';
-import { COMMENTS_API, GOOGLE_API_KEY } from '../../utils/constantsAPI';
+import { COMMENTS_API } from '../../utils/constantsAPI';
 
 const CommentsContainer = ({ videoId, comments, isLoading, firstNextPageToken }) => {
   const [openCommentId, setOpenCommentId] = useState(null);
@@ -15,7 +15,7 @@ const CommentsContainer = ({ videoId, comments, isLoading, firstNextPageToken })
   }, [comments]);
   
   const { data, lastElementRef, loading } = useInfiniteScroll(
-    COMMENTS_API + `${videoId}&textFormat=plainText&part=replies&maxResults=10&key=${GOOGLE_API_KEY}`,
+    COMMENTS_API + `${videoId}&textFormat=plainText&part=replies&maxResults=10&key=${process.env.REACT_APP_API_KEY}`,
     commentsData,
     firstNextPageToken
   );

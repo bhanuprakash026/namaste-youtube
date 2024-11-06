@@ -3,7 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { BeatLoader } from 'react-spinners';
 import './index.css'
 import useInfiniteScroll from '../../Hooks/useInfiniteScroll';
-import { GOOGLE_API_KEY, searchAPI, VIDEO_DETAILS } from '../../utils/constantsAPI';
+import {  searchAPI, VIDEO_DETAILS } from '../../utils/constantsAPI';
 
 
 const formatViewCount = (count) => {
@@ -52,7 +52,7 @@ const SearchVideoCard = ({ videos, initialPageToken, isLoading }) => {
     try {
 
       setVideosLoading(true)
-      const data = await fetch(`${VIDEO_DETAILS}${videoIds}&key=${GOOGLE_API_KEY}`)
+      const data = await fetch(`${VIDEO_DETAILS}${videoIds}&key=${process.env.REACT_APP_API_KEY}`)
       const json = await data.json()
 
       const videoDetails = json.items.map(video => ({
