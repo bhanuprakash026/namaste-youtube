@@ -6,12 +6,13 @@
 .pnp.js
 
 # Node artifact files
-/namaste-youtube/src/utils/constansAPI.js
+
 # testing
 /coverage
 
 # production
 /build
+/src/utils/constansAPI.js
 
 # misc
 .DS_Store
