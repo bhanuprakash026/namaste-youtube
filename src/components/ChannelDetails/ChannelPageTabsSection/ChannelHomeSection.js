@@ -110,6 +110,7 @@ const ChannelHomeSection = ({ uploads, channelId }) => {
         getLatestVideos();
         getHomeShortVideos();
         getPopularVideos()
+    // eslint-disable-next-line
     }, [uploads, channelId]);
 
     if (latestVideos.length === 0) return <h1 className='text-xl'>Loading.....</h1>;
@@ -153,7 +154,7 @@ const ChannelHomeSection = ({ uploads, channelId }) => {
             <hr className='mb-7' />
 
             <div className='flex justify-between'>
-                <h1 className='text-2xl font-poppins flex items-center font-bold'><span><img className='w-[50px] h-[60px]' src="https://cdn.pixabay.com/photo/2021/05/05/12/16/shorts-png-6230962_1280.png" /></span> Shorts</h1>
+                <h1 className='text-2xl font-poppins flex items-center font-bold'><span><img className='w-[50px] h-[60px]' src="https://cdn.pixabay.com/photo/2021/05/05/12/16/shorts-png-6230962_1280.png" alt="shortIcon"/></span> Shorts</h1>
                 <div className='gap-7 flex'>
                     <ArrowLeft key='1003' onClick={scrollLeftShorts} className='cursor-pointer' size={40} strokeWidth={0.5} />
                     <ArrowRight key='1004' onClick={scrollRightShorts} className='cursor-pointer' size={40} strokeWidth={0.5} />

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import {  SHORTS_VIDEOS_IN_CHANNEL, VIDEO_DETAILS } from '../../../utils/constantsAPI';
+import { SHORTS_VIDEOS_IN_CHANNEL, VIDEO_DETAILS } from '../../../utils/constantsAPI';
 import { formatViewCount, timeAgo } from '../../../Helpers/helper';
 import '../../ChannelDetails/index.css'
 import { Link } from 'react-router-dom';
@@ -39,6 +39,8 @@ const ChannelShortsSection = ({ uploads, channelId }) => {
 
   useEffect(() => {
     getShortVideos()
+  
+  // eslint-disable-next-line
   }, [])
 
   const { data, lastElementRef, loading, currentJson, nextPageToken } = useInfiniteScroll(`${SHORTS_VIDEOS_IN_CHANNEL}&channelId=${channelId}`, shortsVideos, pageToken)
@@ -51,6 +53,8 @@ const ChannelShortsSection = ({ uploads, channelId }) => {
       fetchShortsVideoDetails(shortIds)
       setPageToken(nextPageToken)
     }
+
+  // eslint-disable-next-line
   }, [currentJson])
 
   // const {} = useInfiniteScroll()

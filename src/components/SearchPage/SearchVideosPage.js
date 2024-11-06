@@ -50,6 +50,7 @@ const SearchVideosPage = () => {
 
   useEffect(() => {
     fetchSearchResults()
+    // eslint-disable-next-line
   }, [searchParam])
 
   return (

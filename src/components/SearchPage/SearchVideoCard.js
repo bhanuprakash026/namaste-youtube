@@ -3,7 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { BeatLoader } from 'react-spinners';
 import './index.css'
 import useInfiniteScroll from '../../Hooks/useInfiniteScroll';
-import {  searchAPI, VIDEO_DETAILS } from '../../utils/constantsAPI';
+import { searchAPI, VIDEO_DETAILS } from '../../utils/constantsAPI';
 
 
 const formatViewCount = (count) => {
@@ -73,9 +73,9 @@ const SearchVideoCard = ({ videos, initialPageToken, isLoading }) => {
     }
   };
 
-  const { data, lastElementRef, loading, currentJson, pageToken } = useInfiniteScroll(`${searchAPI}&q=${param}&maxResults=30`, [], nextPageToken)
+  const { data, lastElementRef, loading, currentJson, } = useInfiniteScroll(`${searchAPI}&q=${param}&maxResults=30`, [], nextPageToken)
   const currentIds = currentJson?.items?.map(item => item?.id?.videoId).join(',')
-  console.log("currentIds:--", currentIds)
+  console.log(data, loading)
 
 
 
@@ -84,7 +84,7 @@ const SearchVideoCard = ({ videos, initialPageToken, isLoading }) => {
     if (Array.isArray(videos) && videos.length > 0) {
       setFinalSearchedVideos(videos)
     }
-    
+
     setNextPageToken(initialPageToken)
   }, [videos])
 
@@ -92,6 +92,7 @@ const SearchVideoCard = ({ videos, initialPageToken, isLoading }) => {
     if (currentIds !== undefined) {
       fetchVideoDetails(currentIds)
     }
+    // eslint-disable-next-line
 
   }, [currentJson, currentIds])
 

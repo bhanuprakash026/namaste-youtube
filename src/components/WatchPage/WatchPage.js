@@ -56,7 +56,7 @@ const WatchPage = () => {
     return uniqueComments
   }
 
-  console.log("videoDetails:--", videoDetails)
+  console.log(channelData)
 
   const fetchComments = async () => {
     try {

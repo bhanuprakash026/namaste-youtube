@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './index.css';
 import ChannelDetailsPopup from './ChannelDetailsPopup';
-import {  channelDetailsAPI, channelIdByName } from '../../utils/constantsAPI';
+import { channelDetailsAPI, channelIdByName } from '../../utils/constantsAPI';
 import ChannelHomeSection from './ChannelPageTabsSection/ChannelHomeSection'
 import ChannelVideosSection from './ChannelPageTabsSection/ChannelVideosSection';
 import ChannelShortsSection from './ChannelPageTabsSection/ChannelShortsSection';
@@ -54,7 +54,9 @@ const Channel = () => {
 
   useEffect(() => {
     fetchChannelId();
-  }, [channelName]);
+
+    // eslint-disable-next-line
+  }, [channelName, fetchChannelId]);
 
   if (isLoading) <h1>Loading</h1>
 

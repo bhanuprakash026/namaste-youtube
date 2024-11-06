@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 // import { VIDEOS_IN_CHANNEL } from '../../../utils/constantsAPI'
 import '../../ChannelDetails/index.css'
-import { formatViewCount, timeAgo } from '../../../Helpers/helper'
+import { timeAgo } from '../../../Helpers/helper'
 import { VIDEOS_IN_CHANNEL } from '../../../utils/constantsAPI'
 import useInfiniteScroll from '../../../Hooks/useInfiniteScroll'
 import { BeatLoader } from 'react-spinners'
@@ -75,14 +75,18 @@ const ChannelVideosSection = ({ uploads, channelId }) => {
 
   useEffect(() => {
     getVideosInChannel()
+
+  // eslint-disable-next-line
   }, [])
 
   const { data, lastElementRef, loading, currentJson, nextPageToken } = useInfiniteScroll(`${VIDEOS_IN_CHANNEL}${uploads}`, videos, pageToken)
+  console.log(data)
   useEffect(() => {
     if (currentJson?.items && nextPageToken !== undefined && nextPageToken !== null && nextPageToken !== '') {
       setVideos((prevVideos) => [...prevVideos, ...currentJson.items]);
       setPageToken(nextPageToken)
     }
+    // eslint-disable-next-line
   }, [currentJson]);
 
   if (isLoading) {

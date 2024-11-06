@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef } from 'react';
 
-const useInfiniteScroll = (apiEndPoint, initialData, initialNextPageToken, isPrimary = true) => {
+const useInfiniteScroll = (apiEndPoint, initialData, initialNextPageToken) => {
   const [data, setData] = useState(initialData || []);
   const [loading, setLoading] = useState(false);
   const [currentJson, setCurrentJson] = useState({})
@@ -19,7 +19,7 @@ const useInfiniteScroll = (apiEndPoint, initialData, initialNextPageToken, isPri
     } finally {
       setLoading(false);
     }
-  }, [apiEndPoint, nextPageToken, isPrimary]);
+  }, [apiEndPoint, nextPageToken]);
 
   const observer = useRef();
   const lastElementRef = useCallback((node) => {

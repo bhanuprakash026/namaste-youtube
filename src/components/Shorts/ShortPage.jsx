@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { SHORT_VIDEOS, SHORT_VIDEO_DETAILS } from '../../utils/constantsAPI';
 import { BeatLoader } from 'react-spinners';
@@ -27,6 +27,8 @@ const ShortsPage = () => {
             console.error('Error fetching video details:', error);
             setIsLoading(false);
         }
+        // eslint-disable-next-line
+
     }, [pageToken]);
 
     const fetchMoreShortVideos = async () => {
@@ -45,32 +47,35 @@ const ShortsPage = () => {
         }
     }
 
-    const fetchSingleShortVideo = useCallback(async (videoId) => {
-        try {
-            const data = await fetch(`${SHORT_VIDEO_DETAILS}&id=${videoId}`);
-            const json = await data.json();
-            if (json?.items && json.items.length > 0) {
-                setSingleShortVideoDetails(json.items[0]);
-            } else {
-                console.error('No items found in the response');
-                setSingleShortVideoDetails(null);
-            }
-        } catch (error) {
-            console.error('Error fetching video details:', error);
-            setSingleShortVideoDetails(null);
-        }
-    }, []);
+    // const fetchSingleShortVideo = useCallback(async (videoId) => {
+    //     try {
+    //         const data = await fetch(`${SHORT_VIDEO_DETAILS}&id=${videoId}`);
+    //         const json = await data.json();
+    //         if (json?.items && json.items.length > 0) {
+    //             setSingleShortVideoDetails(json.items[0]);
+    //         } else {
+    //             console.error('No items found in the response');
+    //             setSingleShortVideoDetails(null);
+    //         }
+    //     } catch (error) {
+    //         console.error('Error fetching video details:', error);
+    //         setSingleShortVideoDetails(null);
+    //     }
+    // }, []);
 
     useEffect(() => {
-        if(id) navigate((`/shorts/${id}`));
+        if (id) navigate((`/shorts/${id}`));
         fetchShortVideos()
 
+        // eslint-disable-next-line
     }, []);
 
     useEffect(() => {
-        if(window.location.pathname === '/shorts/:id'|| window.location.pathname === '/shorts/undefined') {
+        if (window.location.pathname === '/shorts/:id' || window.location.pathname === '/shorts/undefined') {
             navigate((`/shorts/${shortVideos[0]?.id?.videoId}`));
-        } 
+        }
+        // eslint-disable-next-line
+
     }, [shortVideos])
 
 
@@ -96,8 +101,10 @@ const ShortsPage = () => {
             console.log('Calling useEffect.')
             fetchMoreShortVideos()
         }
+        // eslint-disable-next-line
     }, [currentIndex])
 
+    console.log(singleShortVideoDetails)
     return (
         <div>
             <div className="flex items-center">
