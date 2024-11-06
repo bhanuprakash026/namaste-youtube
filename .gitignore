@@ -14,7 +14,7 @@
 /build
 
 #local configuration)
-/src/utils/constantsAPI.js
+src/utils/constantsAPI.js
 
 # misc
 .DS_Store
