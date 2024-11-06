@@ -12,7 +12,7 @@
 
 # production
 /build
-/src/utils/constansAPI.js
+/src/utils/constantsAPI.js
 
 # misc
 .DS_Store
