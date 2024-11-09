@@ -1,4 +1,4 @@
-import React, { useState, useEffect, memo } from 'react';
+import React, { useState, useEffect, memo, useCallback } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { BeatLoader } from 'react-spinners';
 import './index.css'
@@ -41,19 +41,17 @@ const timeAgo = (timeString) => {
   return 'Just now';
 };
 const SearchVideoCard = ({ videos, initialPageToken, isLoading }) => {
+  const [searchParam] = useSearchParams();
+  const param = searchParam.get('search_query');
+  const [finalSearchedVideos, setFinalSearchedVideos] = useState([]);
+  const [nextPageToken, setNextPageToken] = useState('');
+  const [videosLoading, setVideosLoading] = useState(false);
 
-  const [searchParam] = useSearchParams()
-  const param = searchParam.get('search_query')
-  const [finalSearchedVideos, setFinalSearchedVideos] = useState([])
-  const [nextPageToken, setNextPageToken] = useState('')
-  const [videosLoading, setVideosLoading] = useState(false)
-
-  const fetchVideoDetails = async (videoIds) => {
+  const fetchVideoDetails = useCallback(async (videoIds) => {
     try {
-
-      setVideosLoading(true)
-      const data = await fetch(`${VIDEO_DETAILS}${videoIds}&key=${process.env.REACT_APP_API_KEY}`)
-      const json = await data.json()
+      setVideosLoading(true);
+      const data = await fetch(`${VIDEO_DETAILS}${videoIds}&key=${process.env.REACT_APP_API_KEY}`);
+      const json = await data.json();
 
       const videoDetails = json.items.map(video => ({
         id: video.id,
@@ -66,37 +64,34 @@ const SearchVideoCard = ({ videos, initialPageToken, isLoading }) => {
         viewCount: video.statistics.viewCount,
       }));
 
-      setVideosLoading(false)
-      setFinalSearchedVideos([...finalSearchedVideos, ...videoDetails]);
+      setVideosLoading(false);
+      setFinalSearchedVideos(prevVideos => [...prevVideos, ...videoDetails]);
     } catch (error) {
-      throw new Error(error);
+      console.error("Error fetching video details:", error);
     }
-  };
+  }, []); // Empty dependency array as fetchVideoDetails does not depend on any external variables
 
-  const { data, lastElementRef, loading, currentJson, } = useInfiniteScroll(`${searchAPI}&q=${param}&maxResults=30`, [], nextPageToken)
-  const currentIds = currentJson?.items?.map(item => item?.id?.videoId).join(',')
+  const { data, lastElementRef, loading, currentJson } = useInfiniteScroll(
+    `${searchAPI}&q=${param}&maxResults=30`,
+    [],
+    nextPageToken
+  );
+
   console.log(data, loading)
-
-
-
+  const currentIds = currentJson?.items?.map(item => item?.id?.videoId).join(',');
 
   useEffect(() => {
     if (Array.isArray(videos) && videos.length > 0) {
-      setFinalSearchedVideos(videos)
+      setFinalSearchedVideos(videos);
     }
-
-    setNextPageToken(initialPageToken)
-  }, [videos])
+    setNextPageToken(initialPageToken);
+  }, [videos, initialPageToken]); // Added initialPageToken as a dependency
 
   useEffect(() => {
     if (currentIds !== undefined) {
-      fetchVideoDetails(currentIds)
+      fetchVideoDetails(currentIds);
     }
-    // eslint-disable-next-line
-
-  }, [currentJson, currentIds])
-
-
+  }, [currentIds, fetchVideoDetails]); // Added fetchVideoDetails as a dependency
 
   return (
     <div>

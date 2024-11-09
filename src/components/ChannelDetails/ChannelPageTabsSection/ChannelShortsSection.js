@@ -44,6 +44,7 @@ const ChannelShortsSection = ({ uploads, channelId }) => {
   }, [])
 
   const { data, lastElementRef, loading, currentJson, nextPageToken } = useInfiniteScroll(`${SHORTS_VIDEOS_IN_CHANNEL}&channelId=${channelId}`, shortsVideos, pageToken)
+  console.log(data)
 
   useEffect(() => {
     if (currentJson?.items) {

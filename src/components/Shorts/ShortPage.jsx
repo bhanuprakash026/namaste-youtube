@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { SHORT_VIDEOS, SHORT_VIDEO_DETAILS } from '../../utils/constantsAPI';
+import { SHORT_VIDEOS } from '../../utils/constantsAPI';
 import { BeatLoader } from 'react-spinners';
 
 const ShortsPage = () => {
     const [shortVideos, setShortVideos] = useState([]);
     const [pageToken, setNextPageToken] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [singleShortVideoDetails, setSingleShortVideoDetails] = useState(null);
+    // const [singleShortVideoDetails, setSingleShortVideoDetails] = useState(null);
     const { id } = useParams();
     const navigate = useNavigate();
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -29,7 +29,7 @@ const ShortsPage = () => {
         }
         // eslint-disable-next-line
 
-    }, [pageToken]);
+    }, []);
 
     const fetchMoreShortVideos = async () => {
         console.log('calling this function fetchMoreShortVideos')
@@ -76,7 +76,7 @@ const ShortsPage = () => {
         }
         // eslint-disable-next-line
 
-    }, [shortVideos])
+    }, [shortVideos, navigate])
 
 
 
@@ -104,7 +104,6 @@ const ShortsPage = () => {
         // eslint-disable-next-line
     }, [currentIndex])
 
-    console.log(singleShortVideoDetails)
     return (
         <div>
             <div className="flex items-center">
